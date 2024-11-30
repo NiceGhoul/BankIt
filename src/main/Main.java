@@ -1,6 +1,9 @@
 package main;
 
+import java.sql.SQLException;
+
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -9,16 +12,18 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Button btn = new Button("Say Hello");
-        btn.setOnAction(e -> System.out.println("Hello, JavaFX!"));
-
-        Scene scene = new Scene(btn, 200, 100);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("JavaFX Application");
-        primaryStage.show();
+    	try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("Login Application");
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, SQLException{
         launch(args);
     }
 }
