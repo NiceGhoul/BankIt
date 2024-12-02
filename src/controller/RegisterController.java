@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import factory.UserFactory;
 import javafx.event.ActionEvent;
@@ -15,7 +14,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import model.User;
 import observer.UserObserver;
 
 public class RegisterController implements UserObserver{

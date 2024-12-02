@@ -1,4 +1,5 @@
-/controller/
-/view/
 /factory/
 /main/
+/model/
+/observer/
+/controller/
