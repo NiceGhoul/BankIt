@@ -13,10 +13,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
     	try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Register.fxml"));
             Scene scene = new Scene(loader.load());
+            
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Login Application");
+            primaryStage.setTitle("Register Application");
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,71 +1,118 @@
 package controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import factory.UserFactory;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import util.DBConnection;
-
-import java.io.File;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ResourceBundle;
-
-import javafx.event.ActionEvent;
+import main.UserSession;
+import model.User;
+import observer.UserObserver;
 
 
-public class LoginController implements Initializable{
+public class LoginController implements UserObserver{
 	@FXML
 	private Label loginMessageLabel;
 	@FXML
-	private ImageView loginImageView;
+	private ImageView ImageView;
 	@FXML
 	private TextField usernameTextField;
 	@FXML
 	private PasswordField enterPasswordField;
+	@FXML
+    private Button loginButton;
+	@FXML
+    private Hyperlink registerButton;
 	
-	public void loginButtonOnAction(ActionEvent event) {
-		if(usernameTextField.getText().isBlank() == false && enterPasswordField.getText().isBlank() == false) {
-			validateLogin();
-		}else {
-			loginMessageLabel.setText("Please enter Username and Password.");
-		}
-	}
+	@FXML
+    public void loginButtonOnAction(ActionEvent event) {
+        String username = usernameTextField.getText();
+        String password = enterPasswordField.getText();
+
+        // Validate login credentials
+        if(!username.isBlank() && !password.isBlank()) {
+        	User user = validateLogin(username, password);
+        	if (user != null) {
+        		UserSession.getInstance().setCurrentUser(user);
+        		// Successful login, redirect to the main page
+        		System.out.println(user.getUsername()+ "   " + user.getPassword());
+        		redirectToMainPage();
+        	} else {
+        		// Failed login, show an error message
+        		System.out.println("Wrong username or password.");
+                onUser(false, "Wrong username or password.");
+        	}
+        	
+        }else {
+        	System.out.println("Fields are not filled.");
+            onUser(false, "Please fill all the fields.");
+        }
+    }
+	private User validateLogin(String username, String password) {
+        ArrayList<User> userList = UserFactory.getUserList();  // Get the registered users list
+
+        for (User user : userList) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                return user;  // Return true if a match is found
+            }
+        }
+        return null;  // Return false if no match is found
+    }
+	@FXML
+	private void redirectToMainPage() {
+        try {
+            // Load the main page FXML (for example, MainPage.fxml)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Main.fxml"));
+            Scene mainScene = new Scene(loader.load());
+
+            // Get the current stage (login window)
+            Stage currentStage = (Stage) loginButton.getScene().getWindow();
+
+            // Set the new scene (main application page)
+            currentStage.setScene(mainScene);
+            currentStage.setTitle("Main Application");
+            currentStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            loginMessageLabel.setText("Failed to load main page.");
+            loginMessageLabel.setStyle("-fx-text-fill: red;");
+        }
+    }
+	
+	@FXML
+    public void registerButtonOnAction() {
+        try {
+            // Load the Register page FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Register.fxml"));
+            Scene registerScene = new Scene(loader.load());
+
+            // Get the current stage (login window)
+            Stage currentStage = (Stage) registerButton.getScene().getWindow();
+
+            // Set the new scene (registration page)
+            currentStage.setScene(registerScene);
+            currentStage.setTitle("Register");
+            currentStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            loginMessageLabel.setText("Failed to load register page.");
+        }
+    }
+
 
 	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-		File loginImageFIle = new File("images/10048463.jpg");
-		Image loginImage = new Image(loginImageFIle.toURI().toString());
-		loginImageView.setImage(loginImage);
+	public void onUser(boolean success, String message) {
+		loginMessageLabel.setText(message);
 		
-	}
-	
-	public void validateLogin() {
-		DBConnection dbConnection = DBConnection.getInstance();
-        Connection con = dbConnection.getConnection();
-        
-        String verifyLogin = "SELECT count(1) From users WHERE username = '" + usernameTextField.getText()+"' AND password = '" + enterPasswordField.getText()+"'";
-        try {
-			Statement statement = con.createStatement();
-			ResultSet queryResult = statement.executeQuery(verifyLogin);
-			while(queryResult.next()) {
-				if(queryResult.getInt(1) == 1) {
-					loginMessageLabel.setText("Congratulation!");
-				}else {
-					loginMessageLabel.setText("Invalid Login please try again");
-				}
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			e.getCause();
-		}
 	}
 }
