@@ -72,7 +72,7 @@ public class LoginController implements UserObserver{
 	private void redirectToMainPage() {
         try {
             // Load the main page FXML (for example, MainPage.fxml)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Wallet.fxml"));
             Scene mainScene = new Scene(loader.load());
 
             // Get the current stage (login window)
@@ -80,7 +80,7 @@ public class LoginController implements UserObserver{
 
             // Set the new scene (main application page)
             currentStage.setScene(mainScene);
-            currentStage.setTitle("Main Application");
+            currentStage.setTitle("Wallet");
             currentStage.show();
         } catch (IOException e) {
             e.printStackTrace();

@@ -32,7 +32,6 @@ public class RegisterController implements UserObserver{
 	private PasswordField confirmRegisterPasswordField;
 	@FXML
     private Button RegisterButton;
-	
 	@FXML
 	private Hyperlink LoginButton;
 	

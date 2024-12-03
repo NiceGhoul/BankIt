@@ -1,5 +1,7 @@
+/controller/
+/module-info.class
 /factory/
 /main/
 /model/
 /observer/
-/controller/
+/view/
