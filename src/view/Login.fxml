@@ -31,7 +31,7 @@
             <PasswordField fx:id="enterPasswordField" layoutX="95.0" layoutY="180.0" prefHeight="26.0" prefWidth="173.0" promptText="Password" />
             <Button fx:id="loginButton" layoutX="111.0" layoutY="255.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="26.0" prefWidth="70.0" style="-fx-background-color: #00994C;" text="Login" />
             <Label layoutX="43.0" layoutY="297.0" text="Don't have an account yet." textFill="WHITE" />
-            <Hyperlink fx:id="registerButton" layoutX="195.0" layoutY="294.0" onAction="#registerButtonOnAction" text="Register" />
+            <Hyperlink fx:id="registerButton" layoutX="195.0" layoutY="294.0" onAction="#registerButtonOnAction" text=" Register" />
             <Label fx:id="loginMessageLabel" layoutX="52.0" layoutY="226.0" prefHeight="17.0" prefWidth="191.0" textFill="#e15757" />
          </children>
       </AnchorPane>

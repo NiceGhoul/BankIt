@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Text?>
 
-<HBox spacing="10" style="-fx-background-color: #00994C; -fx-padding: 10; -fx-alignment: center;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="your.package.NavbarController">
+<HBox spacing="10" style="-fx-background-color: #00994C; -fx-padding: 10; -fx-alignment: center;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NavbarController">
     <!-- Logo (optional) -->
     <Text style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: white;" text="BankIt" />
     

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WalletController">
     <!-- Include the navbar -->
@@ -20,5 +28,43 @@
     <center>
         <!-- Center content here -->
     </center>
+   <center>
+      
+   </center>
+   <bottom>
+      <AnchorPane prefHeight="217.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="expenseTable" prefHeight="221.0" prefWidth="600.0">
+              <columns>
+                <TableColumn fx:id="idColumn" prefWidth="42.0" text="ID" />
+                <TableColumn fx:id="expeseTypeColumn" prefWidth="115.0" text="Expense Type" />
+                <TableColumn fx:id="categoryColumn" prefWidth="88.0" text="Category" />
+                <TableColumn fx:id="amountColumn" prefWidth="94.0" text="Amount" />
+                <TableColumn fx:id="descriptionColumn" minWidth="0.0" prefWidth="150.0" text="Description" />
+                <TableColumn fx:id="expenseDateColumn" prefWidth="110.0" text="Expense Date" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </bottom>
+   <center>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="walletName" alignment="CENTER" contentDisplay="CENTER" lineSpacing="10.0" prefHeight="25.0" prefWidth="147.0" text="Wallet Name" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Text fx:id="walletBalance" strokeType="OUTSIDE" strokeWidth="0.0" text="Rp. 10.000" textAlignment="CENTER" wrappingWidth="153.00390625">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Text>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </center>
 
 </BorderPane>
