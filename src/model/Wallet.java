@@ -6,13 +6,16 @@ public class Wallet {
     private int walletId;
     private int userId;
     private String walletName;
+    private String description;
     private BigDecimal balance;
 
-    public Wallet(int walletId, int userId, String walletName, BigDecimal balance) {
+    public Wallet(int walletId, int userId, String walletName, String description, BigDecimal balance) {
         this.walletId = walletId;
         this.userId = userId;
         this.walletName = walletName;
+        this.setDescription(description);
         this.balance = balance;
+        
     }
 
     // Getters and Setters
@@ -47,4 +50,12 @@ public class Wallet {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

@@ -1,15 +1,24 @@
 package factory;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+
+import model.User;
 import model.Wallet;
 
 public class WalletFactory {
-	
+	private static Wallet wallet;
+	private static ArrayList<Wallet> walletList = new ArrayList<>();
 //	private static int walletIdCounter = 1;
-	public static Wallet createWallet(int userId, String userName, BigDecimal balance) {
-		String walletName = userName + "'s Wallet";
+	
+	public static void createWallet(int userId, String userName, String description, BigDecimal balance) {
+		String walletName = userName + " Wallet";
         int walletId = userId + 10;
-		 return new Wallet(walletId, userId, walletName, balance);
+		wallet = new Wallet(walletId, userId, walletName, description, balance);
+		walletList.add(wallet);
 	}
 	
+	public static ArrayList<Wallet> getWalletList() {
+		return walletList;
+	}
 }

@@ -3,7 +3,7 @@ package main;
 import model.User;
 
 public class UserSession {
-    private static UserSession instance;
+    private static volatile UserSession instance;
     private User currentUser;
 
     // Private constructor to prevent instantiation
@@ -11,8 +11,12 @@ public class UserSession {
 
     // Get the singleton instance
     public static UserSession getInstance() {
-        if (instance == null) {
-            instance = new UserSession();
+        if(instance == null) {
+            synchronized (UserSession.class) {
+                if(instance == null) {
+                	instance =  new UserSession();
+                }
+            }
         }
         return instance;
     }

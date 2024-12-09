@@ -12,6 +12,7 @@ module BankIt {
     requires java.sql;
 
     exports main;
+    exports controller;
     opens controller to javafx.fxml;
     opens main;
 }
