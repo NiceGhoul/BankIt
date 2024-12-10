@@ -33,7 +33,7 @@ public class AddWalletController{
 	 	@FXML 
 	 	private Button addWalletButton, backButton;
 	 	@FXML 
-	 	private Label walletName, AddLabel, successLabel;
+	 	private Label walletName, AddLabel, successLabel, descLabel;
 	    @FXML 
 	    private TableView<Expense> transactionTable;
 	    @FXML
@@ -72,7 +72,8 @@ public class AddWalletController{
 	    	    if(description.isEmpty()) {
 	    	    	description = " ";
 	    	    }
-	    	    successLabel.setText("Wallet Created Successfully");
+	    	    
+//	    	    successLabel.setText("Wallet Created Successfully");
 	    	    WalletFactory.createWallet(currentUser.getUserId(), walletName, description, new BigDecimal(balanceText));
 	    	    GoToWallet();
 	    	

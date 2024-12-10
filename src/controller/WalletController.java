@@ -32,7 +32,7 @@ public class WalletController implements walletObserver{
 	 	@FXML 
 	 	private Button addWalletButton, backButton;
 	 	@FXML 
-	 	private Label walletName, AddLabel;
+	 	private Label walletName, AddLabel, descLabel;
 	    @FXML 
 	    private TableView<Expense> transactionTable;
 	    @FXML
@@ -50,20 +50,28 @@ public class WalletController implements walletObserver{
 	    
 	    @FXML
 	    public void initialize() {
-	    	
-	    	System.out.println("walletDropdown: " + walletDropdown);
+	    	System.out.println("total wallet: " + countTotalWallet());
 	        initializeWallet();
+	    }
+	    
+	    public BigDecimal countTotalWallet() {
+	    	ObservableList<Wallet> wallets = FXCollections.observableArrayList(WalletFactory.getWalletList());
+	    	BigDecimal total = BigDecimal.ZERO;
+	    	for(Wallet w : wallets) {
+	    		total = total.add(w.getBalance());
+	    	}
+	    	return total;
 	    }
 	    
 	    public void initializeWallet() {
 	    	User currentUser = UserSession.getInstance().getCurrentUser();
-	    	
+	    	BigDecimal total = countTotalWallet();
 	    	if (WalletFactory.getWalletList().isEmpty()) {
-	            WalletFactory.createWallet(currentUser.getUserId(), currentUser.getUsername(), "Initial Wallet", new BigDecimal("0"));
+	            WalletFactory.createWallet(currentUser.getUserId(), "Overall Expenditure", "overall Wallet", total);
 	        }
 	    	
 	    	ObservableList<Wallet> wallets = FXCollections.observableArrayList(WalletFactory.getWalletList());
-	    	
+//	    	
 	    	for (Wallet w : wallets) {
 	            walletDropdown.getItems().add(w.getWalletName());
 	        }
@@ -75,6 +83,7 @@ public class WalletController implements walletObserver{
 	        }
 	    	
 	    	walletDropdown.setOnAction(event -> handleWalletSelection(wallets));
+	    	updateMainWallet();
 	    }
 	    
 	    public void handleWalletSelection(ObservableList<Wallet> wallets) {
@@ -83,9 +92,13 @@ public class WalletController implements walletObserver{
 	    	 for(Wallet w : wallets) {
 	    		 if (w.getWalletName().equals(selectedWallet)) {
 	    	            wallet = w;
-	    	            update(); // Update the UI with the new wallet details
+	    	            update() ;
+	    	            if("Overall Expenditure".equals(wallet.getWalletName())) {
+	    	            	updateMainWallet(); 
+	    	            }
 	    	            break;
 	    	        }
+	    		 
 	    	 }
 	    }
 	    
@@ -110,23 +123,9 @@ public class WalletController implements walletObserver{
 	        }
 	    }
 	    
-	    @FXML
-	    public void GoToWallet() {
-	    	try {
-	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Wallet.fxml"));
-	            Parent wallet = loader.load();
-
-
-	            Stage stage = (Stage) backButton.getScene().getWindow();
-
-	            stage.setScene(new Scene(wallet));
-	            stage.setTitle("Wallet");
-	            stage.show();
-
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	    	
+	    @Override
+	    public void updateMainWallet() {
+	    	walletBalance.setText("Rp. " + countTotalWallet());
 	    }
 	        
 	    @Override
@@ -134,6 +133,7 @@ public class WalletController implements walletObserver{
 	    	if(wallet != null) {
 	    		walletName.setText(wallet.getWalletName());
 		        walletBalance.setText("Rp. " + wallet.getBalance().toPlainString());
+		        descLabel.setText(wallet.getDescription()); 
 	    	}
 	    }
 }

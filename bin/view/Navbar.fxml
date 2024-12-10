@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Text?>
+
+<HBox spacing="10" style="-fx-background-color: #00994C; -fx-padding: 10; -fx-alignment: center;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NavbarController">
+    <!-- Logo (optional) -->
+    <Text style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: white;" text="BankIt" />
+    
+    <!-- Hyperlinks with black text -->
+    <Hyperlink fx:id="WalletButton" onAction="#WalletButtonOnAction" style="-fx-text-fill: black;" text="Wallet" />
+    <Hyperlink fx:id="ExpenseButton" onAction="#ExpenseButtonOnAction" style="-fx-text-fill: black;" text="Expense" />
+    <Hyperlink fx:id="StatsButton" onAction="#StatsButtonOnAction" style="-fx-text-fill: black;" text="Stats" />
+    
+    <!-- Spacer to push items to the left -->
+    <Region HBox.hgrow="ALWAYS" />
+</HBox>

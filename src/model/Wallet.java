@@ -13,7 +13,7 @@ public class Wallet {
         this.walletId = walletId;
         this.userId = userId;
         this.walletName = walletName;
-        this.setDescription(description);
+        this.description = description;
         this.balance = balance;
         
     }

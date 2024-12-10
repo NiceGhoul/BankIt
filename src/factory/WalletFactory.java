@@ -8,13 +8,13 @@ import model.Wallet;
 
 public class WalletFactory {
 	private static Wallet wallet;
+	private static int walletId = 10;
 	private static ArrayList<Wallet> walletList = new ArrayList<>();
 //	private static int walletIdCounter = 1;
 	
 	public static void createWallet(int userId, String userName, String description, BigDecimal balance) {
-		String walletName = userName + " Wallet";
-        int walletId = userId + 10;
-		wallet = new Wallet(walletId, userId, walletName, description, balance);
+		String walletName;
+		wallet = new Wallet(walletId++, userId, userName, description, balance);
 		walletList.add(wallet);
 	}
 	
