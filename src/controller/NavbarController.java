@@ -12,7 +12,7 @@ public class NavbarController {
 	@FXML
 	private Hyperlink WalletButton;
 	@FXML
-	private Hyperlink ExpenseButton;
+	private Hyperlink TransactionButton;
 	@FXML
 	private Hyperlink StatsButton;
 	
@@ -35,18 +35,18 @@ public class NavbarController {
         }
     }
 	@FXML
-	private void ExpenseButtonOnAction() {
+	private void TransactionButtonOnAction() {
 		try {
             // Load the main page FXML (for example, MainPage.fxml)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Expense.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Transaction.fxml"));
             Scene mainScene = new Scene(loader.load());
 
             // Get the current stage (login window)
-            Stage currentStage = (Stage) ExpenseButton.getScene().getWindow();
+            Stage currentStage = (Stage) TransactionButton.getScene().getWindow();
 
             // Set the new scene (main application page)
             currentStage.setScene(mainScene);
-            currentStage.setTitle("Expense");
+            currentStage.setTitle("Transaction");
             currentStage.show();
         } catch (IOException e) {
             e.printStackTrace();

@@ -88,6 +88,7 @@ public class RegisterController implements UserObserver{
 	}
 	public void LoginButtonOnAction() {
 		try {
+			UserFactory.createUser("bertrand", "12345", "bertrand@gmail.com", "12345");
 	        // Load the Login FXML
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
 	        Scene loginScene = new Scene(loader.load());

@@ -11,7 +11,7 @@
     
     <!-- Hyperlinks with black text -->
     <Hyperlink fx:id="WalletButton" onAction="#WalletButtonOnAction" style="-fx-text-fill: black;" text="Wallet" />
-    <Hyperlink fx:id="ExpenseButton" onAction="#ExpenseButtonOnAction" style="-fx-text-fill: black;" text="Expense" />
+    <Hyperlink fx:id="TransactionButton" onAction="#TransactionButtonOnAction" style="-fx-text-fill: black;" text="Transaction" />
     <Hyperlink fx:id="StatsButton" onAction="#StatsButtonOnAction" style="-fx-text-fill: black;" text="Stats" />
     
     <!-- Spacer to push items to the left -->

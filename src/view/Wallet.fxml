@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="403.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WalletController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #474747;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WalletController">
     <!-- Include the navbar -->
     <top>
         <fx:include source="navbar.fxml" />
@@ -24,69 +24,67 @@
     <left>
         <!-- Left content here -->
     </left>
-    
+
     <right>
         <!-- Right content here -->
     </right>
-   <bottom>
-      <AnchorPane prefHeight="182.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <TableView fx:id="expenseTable" layoutY="-1.0" prefHeight="188.0" prefWidth="600.0">
-              <columns>
-                <TableColumn fx:id="idColumn" prefWidth="42.0" text="ID" />
-                <TableColumn fx:id="expeseTypeColumn" prefWidth="115.0" text="Expense Type" />
-                <TableColumn fx:id="categoryColumn" prefWidth="88.0" text="Category" />
-                <TableColumn fx:id="amountColumn" prefWidth="94.0" text="Amount" />
-                <TableColumn fx:id="descriptionColumn" minWidth="0.0" prefWidth="150.0" text="Description" />
-                <TableColumn fx:id="expenseDateColumn" prefWidth="110.0" text="Expense Date" />
-              </columns>
-            </TableView>
-         </children>
-      </AnchorPane>
-   </bottom>
-   <center>
-      <VBox alignment="TOP_CENTER" prefHeight="80.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="600.0">
-               <children>
-                  <Button fx:id="addWalletButton" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" onAction="#GoToAddWalletScene" prefWidth="111.0" text="Add New Wallet">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Region prefHeight="32.0" prefWidth="289.0" />
-                  <ComboBox fx:id="walletDropdown" prefHeight="27.0" prefWidth="180.0">
-                     <HBox.margin>
-                        <Insets right="10.0" top="5.0" />
-                     </HBox.margin>
-                  </ComboBox>
-               </children>
-            </HBox>
-            <Label fx:id="walletName" alignment="CENTER" contentDisplay="CENTER" lineSpacing="10.0" prefHeight="25.0" prefWidth="147.0" text="Wallet Name" textAlignment="CENTER">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Text fx:id="walletBalance" strokeType="OUTSIDE" strokeWidth="0.0" text="Rp. 10.000" textAlignment="CENTER" wrappingWidth="353.00390625">
-               <font>
-                  <Font name="System Bold" size="30.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </Text>
-            <Label fx:id="descLabel" alignment="CENTER" prefHeight="19.0" prefWidth="232.0" textAlignment="CENTER">
-               <font>
-                  <Font size="15.0" />
-               </font></Label>
-         </children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-      </VBox>
-   </center>
 
+    <bottom>
+        <AnchorPane prefHeight="310.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+            <children>
+                <TableView fx:id="expenseTable" layoutY="1.0" prefHeight="308.0" prefWidth="900.0" style="-fx-background-color: #474747;">
+                    <columns>
+                        <TableColumn fx:id="expeseTypeColumn" prefWidth="160.0" text="Transcation Type" />
+                        <TableColumn fx:id="categoryColumn" prefWidth="130.0" text="Category" />
+                        <TableColumn fx:id="amountColumn" prefWidth="130.0" text="Amount" />
+                        <TableColumn fx:id="descriptionColumn" prefWidth="292.0" text="Description" />
+                        <TableColumn fx:id="expenseDateColumn" prefWidth="187.0" text="Date" />
+                    </columns>
+                </TableView>
+            </children>
+        </AnchorPane>
+    </bottom>
+
+    <center>
+        <VBox alignment="TOP_CENTER" prefHeight="300.0" prefWidth="900.0" spacing="15.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER" prefHeight="50.0" prefWidth="900.0">
+                    <children>
+                        <Button fx:id="addWalletButton" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" defaultButton="true" mnemonicParsing="false" onAction="#GoToAddWalletScene" prefWidth="150.0" text="Add New Wallet">
+                            <HBox.margin>
+                                <Insets top="5.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Region prefHeight="50.0" prefWidth="444.0" />
+                        <ComboBox fx:id="walletDropdown" prefHeight="35.0" prefWidth="207.0">
+                            <HBox.margin>
+                                <Insets right="10.0" top="5.0" />
+                            </HBox.margin>
+                        </ComboBox>
+                    </children>
+                </HBox>
+
+                <Label fx:id="walletName" alignment="CENTER" contentDisplay="CENTER" lineSpacing="10.0" prefHeight="35.0" prefWidth="200.0" text="Wallet Name" textAlignment="CENTER">
+                    <font>
+                        <Font size="22.0" />
+                    </font>
+                </Label>
+
+                <Text fx:id="walletBalance" strokeType="OUTSIDE" strokeWidth="0.0" text="Rp. 10.000" textAlignment="CENTER" wrappingWidth="400.0">
+                    <font>
+                        <Font name="System Bold" size="40.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="15.0" />
+                    </VBox.margin>
+                </Text>
+
+                <Label fx:id="descLabel" alignment="CENTER" prefHeight="25.0" prefWidth="300.0" textAlignment="CENTER">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+            </children>
+        </VBox>
+    </center>
 </BorderPane>
