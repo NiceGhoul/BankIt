@@ -2,7 +2,6 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -14,16 +13,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.UserSession;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import model.Wallet;
-import observer.walletObserver;
 import model.Expense;
 import model.User;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import factory.WalletFactory;
 
 public class AddWalletController{
@@ -48,8 +42,6 @@ public class AddWalletController{
 	    private TextField walletNameField, walletBalanceField;
 	    @FXML
 	    private TextArea walletDesc;
-	    
-	    private Wallet wallet;
 	    
 	    @FXML
 	    public void initialize() {	

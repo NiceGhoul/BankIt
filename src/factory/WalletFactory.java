@@ -3,7 +3,6 @@ package factory;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import model.User;
 import model.Wallet;
 
 public class WalletFactory {
@@ -13,7 +12,6 @@ public class WalletFactory {
 //	private static int walletIdCounter = 1;
 	
 	public static void createWallet(int userId, String userName, String description, BigDecimal balance) {
-		String walletName;
 		wallet = new Wallet(walletId++, userId, userName, description, balance);
 		walletList.add(wallet);
 	}

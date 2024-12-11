@@ -2,7 +2,6 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -22,7 +21,6 @@ import model.User;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import factory.WalletFactory;
 
 public class WalletController implements walletObserver{
