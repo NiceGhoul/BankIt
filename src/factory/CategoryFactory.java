@@ -11,6 +11,20 @@ public class CategoryFactory {
         categoryList.add(category);
     }
     public static ArrayList<Category> getCategoryList() {
+        createDummyCategories();
         return categoryList;
     }
+    public static void createDummyCategories() {
+        createCategory("Groceries");
+        createCategory("Utilities");
+        createCategory("Transportation");
+        createCategory("Entertainment");
+        createCategory("Healthcare");
+        createCategory("Education");
+        createCategory("Dining Out");
+        createCategory("Savings");
+        createCategory("Investments");
+        createCategory("Clothing");
+    }
+    
 }

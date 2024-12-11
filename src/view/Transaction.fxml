@@ -17,74 +17,87 @@
     <top>
         <fx:include source="navbar.fxml" />
     </top>
-    <center>
-        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-            <children>
-                <HBox alignment="CENTER" prefHeight="75.0" prefWidth="900.0" spacing="10">
-                    <children>
-                        <Button fx:id="AddTransactionButton" defaultButton="true" mnemonicParsing="false" onAction="#AddTransactionButtonOnAction" prefHeight="26.0" prefWidth="145.0" text="Add Expense" />
-                        
-                        <Region prefHeight="71.0" prefWidth="90.0" />
-                        
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Income:">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Text>
-                        <Region prefHeight="75.0" prefWidth="15.0" />
-                        <Text fx:id="incomeText" fill="#3eb5b3" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Text>
-                        
-                        <Region prefHeight="75.0" prefWidth="59.0" />
-                        
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Expense:">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Text>
-                        <Region prefHeight="75.0" prefWidth="15.0" />
-                        <Text fx:id="expenseText" fill="#d07070" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Text>
-                        
-                        <Region prefHeight="75.0" prefWidth="59.0" />
-                        
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Total:">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Text>
-                        <Region prefHeight="75.0" prefWidth="15.0" />
-                        <Text fx:id="totalText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Text>
-                        
-                        <Region prefHeight="75.0" prefWidth="47.0" />
-                        
-                        <ComboBox fx:id="comboBox" prefWidth="150.0" />
-                    </children>
-                </HBox>
-                
-                <TableView fx:id="transactionTableView" prefHeight="479.0" prefWidth="900.0" style="-fx-background-color: #474747;">
-                    <columns>
-                        <TableColumn fx:id="transactionTypeColumn" prefWidth="160.0" text="Transaction Type" />
-                        <TableColumn fx:id="categoryColumn" prefWidth="130.0" text="Category" />
-                        <TableColumn fx:id="amountColumn" prefWidth="130.0" text="Amount" />
-                        <TableColumn fx:id="descriptionColumn" prefWidth="270.0" text="Description" />
-                        <TableColumn fx:id="expenseDateColumn" prefWidth="208.0" text="Date" />
-                    </columns>
-                    <VBox.margin>
-                        <Insets top="10.0" />
-                    </VBox.margin>
-                </TableView>
-            </children>
-        </VBox>
-    </center>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="900.0">
+               <children>
+                  <Button fx:id="AddTransactionButton" defaultButton="true" mnemonicParsing="false" onAction="#AddTransactionButtonOnAction" prefHeight="26.0" prefWidth="145.0" text="Add Transaction" />
+                  <Region prefHeight="71.0" prefWidth="90.0">
+                     <opaqueInsets>
+                        <Insets right="5.0" />
+                     </opaqueInsets>
+                  </Region>
+                  <ComboBox fx:id="dateComboBox" prefHeight="26.0" prefWidth="120.0" promptText="Date" />
+                  <Region prefHeight="71.0" prefWidth="90.0">
+                     <opaqueInsets>
+                        <Insets right="5.0" />
+                     </opaqueInsets>
+                  </Region>
+                  <ComboBox fx:id="monthComboBox" prefHeight="26.0" prefWidth="110.0" promptText="Month" />
+                  <Region prefHeight="71.0" prefWidth="90.0" />
+                  <ComboBox fx:id="yearComboBox" prefHeight="26.0" prefWidth="110.0" promptText="Year" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="75.0" prefWidth="200.0">
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Income:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Region prefHeight="75.0" prefWidth="15.0" />
+                  <Text fx:id="incomeText" fill="#3eb5b3" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00" wrappingWidth="127.88645935058594">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Region prefHeight="51.0" prefWidth="11.0" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Expense:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Region prefHeight="75.0" prefWidth="15.0" />
+                  <Text fx:id="expenseText" fill="#d07070" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00" wrappingWidth="139.18658447265625">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Region prefHeight="75.0" prefWidth="11.0" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Total:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Region prefHeight="75.0" prefWidth="15.0" />
+                  <Text fx:id="totalText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0.00" wrappingWidth="133.68280029296875">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+                  <Region prefHeight="51.0" prefWidth="19.0">
+                     <opaqueInsets>
+                        <Insets right="5.0" />
+                     </opaqueInsets>
+                  </Region>
+                  <ComboBox fx:id="typeComboBox" prefWidth="150.0" />
+               </children>
+            </HBox>
+            <TableView fx:id="transactionTableView" prefHeight="479.0" prefWidth="900.0" style="-fx-background-color: #474747;">
+              <columns>
+                  <TableColumn fx:id="transactionTypeColumn" prefWidth="160.0" text="Transaction Type" />
+                  <TableColumn fx:id="categoryColumn" prefWidth="130.0" text="Category" />
+                  <TableColumn fx:id="amountColumn" prefWidth="130.0" text="Amount" />
+                  <TableColumn fx:id="descriptionColumn" prefWidth="270.8840637207031" text="Description" />
+                  <TableColumn fx:id="DateColumn" prefWidth="208.0" text="Date" />
+              </columns>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </TableView>
+         </children>
+      </VBox>
+   </center>
+
 </BorderPane>
