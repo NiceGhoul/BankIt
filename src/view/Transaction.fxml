@@ -13,10 +13,6 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #474747;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TransactionController">
-    <!-- Include the navbar -->
-    <top>
-        <fx:include source="navbar.fxml" />
-    </top>
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -88,10 +84,11 @@
               <columns>
                   <TableColumn fx:id="transactionTypeColumn" prefWidth="115.0" text="Transaction Type" />
                   <TableColumn fx:id="walletColumn" prefWidth="96.0" text="Wallet" />
-                  <TableColumn fx:id="categoryColumn" prefWidth="99.0" text="Category" />
-                  <TableColumn fx:id="amountColumn" prefWidth="129.0" text="Amount" />
-                  <TableColumn fx:id="descriptionColumn" prefWidth="227.0" text="Description" />
-                  <TableColumn fx:id="DateColumn" prefWidth="154.0" text="Date" />
+                  <TableColumn fx:id="categoryColumn" prefWidth="74.0" text="Category" />
+                  <TableColumn fx:id="amountColumn" prefWidth="121.0" text="Amount" />
+                  <TableColumn fx:id="descriptionColumn" prefWidth="204.0" text="Description" />
+                  <TableColumn fx:id="DateColumn" prefWidth="160.73638916015625" text="Date" />
+                  <TableColumn fx:id="actionColumn" prefWidth="131.26361083984375" text="Action" />
               </columns>
                <VBox.margin>
                   <Insets />
@@ -100,5 +97,14 @@
          </children>
       </VBox>
    </center>
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="900.0" style="-fx-background-color: #00994C;" BorderPane.alignment="CENTER">
+         <children>
+            <fx:include prefWidth="700.0" source="navbar.fxml" />
+            <ComboBox fx:id="exportComboBox" prefHeight="26.0" prefWidth="90.0" />
+            <fx:include prefWidth="85.0" source="logout.fxml" />
+         </children>
+      </HBox>
+   </top>
 
 </BorderPane>

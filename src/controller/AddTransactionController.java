@@ -25,10 +25,11 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
-import main.UserSession;
 import model.Category;
 import model.User;
 import model.Wallet;
+import util.ShowAlert;
+import util.UserSession;
 
 public class AddTransactionController {
     @FXML
@@ -161,11 +162,7 @@ public class AddTransactionController {
             }
 
             // Display success message
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Add Transaction is Successful");
-            alert.setHeaderText("Transaction is Created");
-            alert.setContentText("The Transaction was created successfully!");
-            alert.showAndWait();
+            ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Add Transaction is Successful", "Transaction is Created", "The Transaction was created successfully!");
 
             navigateToTransactionPage();
 

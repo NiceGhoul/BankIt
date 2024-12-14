@@ -17,8 +17,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import main.UserSession;
 import model.User;
+import util.ShowAlert;
+import util.UserSession;
 
 public class LoginController {
     @FXML
@@ -46,11 +47,7 @@ public class LoginController {
                 UserSession.getInstance().setCurrentUser(user);
                 // Successful login, redirect to the main page
                 System.out.println(user.getUsername() + "   " + user.getPassword());
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Login is Successful");
-                alert.setHeaderText("Login is SuccesFull");
-                alert.setContentText("The Login is successfull!\nRedirecting to The Main Page");
-                alert.showAndWait();
+                ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Login is Successful", "Login is SuccesFull", "The Login is successfull!\nRedirecting to The Main Page");
                 redirectToMainPage();
             } else {
                 // Failed login, show an error message

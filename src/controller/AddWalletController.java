@@ -14,9 +14,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.UserSession;
 import model.Expense;
 import model.User;
+import util.ShowAlert;
+import util.UserSession;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -67,11 +68,7 @@ public class AddWalletController {
 			description = " ";
 		}
 		WalletFactory.createWallet(currentUser.getUserId(), walletName, description, new BigDecimal(balanceText));
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Add Wallet is Successful");
-		alert.setHeaderText("Wallet is Created");
-		alert.setContentText("The Wallet was created successfully!");
-		alert.showAndWait();
+		ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Add Wallet is Successful", "Wallet is Created", "The Wallet was created successfully!");
 		GoToWallet();
 
 	}

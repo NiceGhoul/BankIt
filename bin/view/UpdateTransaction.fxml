@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
@@ -16,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #474747;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddTransactionController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #474747;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateTransactionController">
 
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
@@ -30,7 +29,7 @@
                   </Button>
                   <Region prefHeight="75.0" prefWidth="15.0" />
                   <Region prefHeight="75.0" prefWidth="38.0" />
-                  <Label fx:id="AddLabel" text="Add New Transaction" textFill="WHITE">
+                  <Label fx:id="AddLabel" text="Update Transaction" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="28.0" />
                      </font>
@@ -45,7 +44,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button fx:id="createTransactionButton" defaultButton="true" layoutX="371.0" layoutY="355.0" mnemonicParsing="false" onAction="#createTransactionButtonOnAction" prefWidth="200.0" text="Create Transaction">
+                  <Button fx:id="updateTransactionButton" defaultButton="true" layoutX="371.0" layoutY="355.0" mnemonicParsing="false" onAction="#updateTransactionButtonOnAction" prefWidth="200.0" text="Update Transaction">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -59,7 +58,6 @@
                      </font>
                   </Label>
                   <ComboBox fx:id="categoryComboBox" layoutX="490.0" layoutY="72.0" prefHeight="31.0" prefWidth="300.0" />
-                  <Button fx:id="AddCategoryButton" layoutX="805.0" layoutY="72.0" mnemonicParsing="false" onAction="#AddCategoryButtonOnAction" prefHeight="31.0" text="+" />
                   <Label layoutX="93.0" layoutY="135.0" text="Amount" textFill="WHITE">
                      <font>
                         <Font size="18.0" />

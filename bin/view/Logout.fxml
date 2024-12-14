@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.layout.HBox?>
+
+
+<HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="95.0" style="-fx-background-color: #00994C;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LogoutController">
+   <children>
+      <Hyperlink fx:id="logoutButton" onAction="#logoutButtonOnAction" style="-fx-text-fill: #000000;" text="Logout" />
+   </children>
+</HBox>

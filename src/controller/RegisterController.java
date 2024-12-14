@@ -16,6 +16,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import util.ShowAlert;
 public class RegisterController{
 
 	@FXML
@@ -48,11 +49,7 @@ public class RegisterController{
                 System.out.println("Passwords match. Creating user...");
                 UserFactory.createUser(username, password, email, confirmPassword);
                 System.out.println("User added. Redirecting to login...");
-				Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Register is Successful");
-                alert.setHeaderText("Register is SuccesFull");
-                alert.setContentText("The Register is successfull!\nRedirecting to login page");
-                alert.showAndWait();
+				ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Register is Successful", "Register is SuccesFull", "The Register is successfull!\nRedirecting to login page");
                 redirectToLogin();
             } else {
                 System.out.println("Passwords do not match.");

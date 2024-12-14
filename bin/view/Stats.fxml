@@ -5,8 +5,8 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StatsController">
     <!-- Include the navbar -->
     <top>
-        <fx:include source="navbar.fxml" />
-    </top>
+        <fx:include prefWidth="805.0" source="navbar.fxml" />
+   </top>
 
     <!-- Optional: You can add content to the other sections as well -->
     <left>
