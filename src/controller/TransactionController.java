@@ -65,9 +65,14 @@ public class TransactionController {
 	@FXML
 	private TableColumn<Transaction, LocalDate> DateColumn;
 
-	private List<Transaction> transactions = TransactionFactory.test();
+	private static List<Transaction> transactions = TransactionFactory.test();
 
 	// Initialize method called automatically after FXML is loaded
+	
+	public static List<Transaction> getTransactions() {
+	    return transactions;
+	}
+
 	@FXML
 	private void initialize() {
 		setupDateComboBox();

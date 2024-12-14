@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StatsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #474747;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StatsController">
     <!-- Include the navbar -->
     <top>
         <fx:include source="navbar.fxml" />
     </top>
 
-    <!-- Optional: You can add content to the other sections as well -->
-    <left>
-        <!-- Left content here -->
-    </left>
-    
-    <right>
-        <!-- Right content here -->
-    </right>
-    
     <center>
-        <!-- Center content here -->
-    </center>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <!-- HBox for Date, Month, Year, and Chart Selection -->
+                <HBox alignment="CENTER" prefHeight="75.0" prefWidth="900.0">
+                    <children>
+                        <ComboBox fx:id="dateComboBox" prefHeight="26.0" prefWidth="120.0" promptText="Date" />
+                        <Region prefHeight="71.0" prefWidth="90.0">
+                            <opaqueInsets>
+                                <Insets right="5.0" />
+                            </opaqueInsets>
+                        </Region>
+                        <ComboBox fx:id="monthComboBox" prefHeight="26.0" prefWidth="110.0" promptText="Month" />
+                        <Region prefHeight="71.0" prefWidth="90.0" />
+                        <ComboBox fx:id="yearComboBox" prefHeight="26.0" prefWidth="110.0" promptText="Year" />
+                        <Region prefHeight="71.0" prefWidth="90.0" />
+                        <ComboBox fx:id="chartSelector" prefHeight="26.0" prefWidth="150.0" promptText="Select Chart" />
+                    </children>
+                </HBox>
 
+                <!-- AnchorPane for displaying the chart -->
+                <AnchorPane fx:id="chartContainer" prefHeight="400.0" prefWidth="900.0" />
+            </children>
+        </VBox>
+    </center>
 </BorderPane>
