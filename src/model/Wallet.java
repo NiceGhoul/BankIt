@@ -15,7 +15,6 @@ public class Wallet {
         this.walletName = walletName;
         this.description = description;
         this.balance = balance;
-        
     }
 
     // Getters and Setters

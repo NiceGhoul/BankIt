@@ -7,7 +7,7 @@ import model.Wallet;
 
 public class WalletFactory {
 	private static Wallet wallet;
-	private static int walletId = 10;
+	private static int walletId = 1;
 	private static ArrayList<Wallet> walletList = new ArrayList<>();
 //	private static int walletIdCounter = 1;
 	
@@ -19,4 +19,4 @@ public class WalletFactory {
 	public static ArrayList<Wallet> getWalletList() {
 		return walletList;
 	}
-}
+} 

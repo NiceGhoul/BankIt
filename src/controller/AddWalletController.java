@@ -64,8 +64,6 @@ public class AddWalletController{
 	    	    if(description.isEmpty()) {
 	    	    	description = " ";
 	    	    }
-	    	    
-//	    	    successLabel.setText("Wallet Created Successfully");
 	    	    WalletFactory.createWallet(currentUser.getUserId(), walletName, description, new BigDecimal(balanceText));
 	    	    GoToWallet();
 	    	

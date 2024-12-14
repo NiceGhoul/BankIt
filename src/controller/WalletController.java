@@ -17,10 +17,17 @@ import javafx.collections.ObservableList;
 import model.Wallet;
 import observer.walletObserver;
 import model.Expense;
+import model.Transaction;
 import model.User;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
+import factory.TransactionFactory;
 import factory.WalletFactory;
 
 public class WalletController implements walletObserver{
@@ -32,15 +39,17 @@ public class WalletController implements walletObserver{
 	 	@FXML 
 	 	private Label walletName, AddLabel, descLabel;
 	    @FXML 
-	    private TableView<Expense> transactionTable;
+	    private TableView<Transaction> transactionTable;
 	    @FXML
 	    private ComboBox<String> walletDropdown;
 	    @FXML 
-	    private TableColumn<Expense, Integer> idColumn;
+	    private TableColumn<Transaction, Integer> idColumn, categoryColumn;
 	    @FXML 
-	    private TableColumn<Expense, String> expenseTypeColumn, categoryColumn, descriptionColumn, expenseDateColumn;
+	    private TableColumn<Transaction, String> transactionTypeColumn, descriptionColumn;
 	    @FXML 
-	    private TableColumn<Expense, BigDecimal> amountColumn;
+	    private TableColumn<Transaction, BigDecimal> amountColumn;
+	    @FXML
+		private TableColumn<Transaction, LocalDate> expenseDateColumn;
 	    @FXML
 	    private TextField walletNameField;
 	    
@@ -48,8 +57,9 @@ public class WalletController implements walletObserver{
 	    
 	    @FXML
 	    public void initialize() {
-	    	System.out.println("total wallet: " + countTotalWallet());
+	    	initializeTable();
 	        initializeWallet();
+	        loadTransactionsForSelectedWallet();
 	    }
 	    
 	    public BigDecimal countTotalWallet() {
@@ -61,15 +71,25 @@ public class WalletController implements walletObserver{
 	    	return total;
 	    }
 	    
+	    public void AddDecimals(BigDecimal count) {
+	    	NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
+	    	walletBalance.setText("Rp. " + numberFormat.format(count));
+	    	
+	    }
+	    
 	    public void initializeWallet() {
+	    	
 	    	User currentUser = UserSession.getInstance().getCurrentUser();
 	    	BigDecimal total = countTotalWallet();
 	    	if (WalletFactory.getWalletList().isEmpty()) {
-	            WalletFactory.createWallet(currentUser.getUserId(), "Overall Expenditure", "overall Wallet", total);
+	            WalletFactory.createWallet(currentUser.getUserId(), "Overall Expenditure", "user overall wallet", total);
+//	            WalletFactory.createWallet(currentUser.getUserId(), "Investment Wallet", "Investments Funds", new BigDecimal("10000.00"));
 	        }
 	    	
 	    	ObservableList<Wallet> wallets = FXCollections.observableArrayList(WalletFactory.getWalletList());
-//	    	
+	    	
+	    	
+	    	
 	    	for (Wallet w : wallets) {
 	            walletDropdown.getItems().add(w.getWalletName());
 	        }
@@ -78,25 +98,68 @@ public class WalletController implements walletObserver{
 	            wallet = wallets.get(0);
 	            walletDropdown.getSelectionModel().selectFirst();
 	            update();
+	            loadTransactionsForSelectedWallet();
 	        }
 	    	
 	    	walletDropdown.setOnAction(event -> handleWalletSelection(wallets));
 	    	updateMainWallet();
+	    	loadTransactionsForSelectedWallet();
+	    }
+	    
+	    public void initializeTable() {
+	        transactionTypeColumn.setCellValueFactory(
+	            cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getTransactionType()));
+	        categoryColumn.setCellValueFactory(
+	            cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getCategoryId()));
+	        amountColumn.setCellValueFactory(
+	            cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getAmount()));
+	        descriptionColumn.setCellValueFactory(
+	            cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDescription()));
+	        expenseDateColumn.setCellValueFactory(
+	            cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getDate()));
+	    }
+	    
+	    public void loadTransactionsForSelectedWallet() {
+	        ObservableList<Transaction> walletTransactions;
+	        
+	        if (wallet != null && "Overall Expenditure".equals(wallet.getWalletName())) {
+	            LocalDate today = LocalDate.now();
+	            walletTransactions = FXCollections.observableArrayList(
+	                TransactionFactory.getTransactionList().stream()
+	                    .filter(t -> t.getDate().isEqual(today))
+	                    .collect(Collectors.toList())
+	            );
+	        } else if (wallet != null) {
+	            int walletId = wallet.getWalletId();
+	            walletTransactions = FXCollections.observableArrayList(
+	                TransactionFactory.getTransactionList().stream()
+	                    .filter(t -> t.getWalletId() == walletId)
+	                    .collect(Collectors.toList())
+	            );
+	        } else {
+	            walletTransactions = FXCollections.observableArrayList();
+	        }
+	        System.out.println("All Transactions: " + TransactionFactory.getTransactionList());
+	        transactionTable.setItems(walletTransactions);
 	    }
 	    
 	    public void handleWalletSelection(ObservableList<Wallet> wallets) {
-	    	 String selectedWallet = walletDropdown.getSelectionModel().getSelectedItem();
+	    	
+	    	String selectedWallet = walletDropdown.getSelectionModel().getSelectedItem();
 	    	 
 	    	 for(Wallet w : wallets) {
 	    		 if (w.getWalletName().equals(selectedWallet)) {
+	    			 
+	    			 	System.out.println("Selected Wallet ID: " + wallet.getWalletId());
 	    	            wallet = w;
-	    	            update() ;
+	    	            update();
+	    	            loadTransactionsForSelectedWallet();
+	    	            
 	    	            if("Overall Expenditure".equals(wallet.getWalletName())) {
 	    	            	updateMainWallet(); 
 	    	            }
 	    	            break;
 	    	        }
-	    		 
 	    	 }
 	    }
 	    
@@ -123,14 +186,14 @@ public class WalletController implements walletObserver{
 	    
 	    @Override
 	    public void updateMainWallet() {
-	    	walletBalance.setText("Rp. " + countTotalWallet());
+	    	AddDecimals(countTotalWallet());
 	    }
 	        
 	    @Override
 	    public void update() {
 	    	if(wallet != null) {
 	    		walletName.setText(wallet.getWalletName());
-		        walletBalance.setText("Rp. " + wallet.getBalance().toPlainString());
+	    		AddDecimals(wallet.getBalance()); 
 		        descLabel.setText(wallet.getDescription()); 
 	    	}
 	    }
