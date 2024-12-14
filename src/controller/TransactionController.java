@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -13,7 +15,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Transaction;
+import model.Wallet;
 import factory.TransactionFactory;
+import factory.WalletFactory;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -54,7 +58,7 @@ public class TransactionController {
 	private TableColumn<Transaction, String> transactionTypeColumn;
 
 	@FXML
-	private TableColumn<Transaction, Integer> categoryColumn;
+	private TableColumn<Transaction, String> categoryColumn;
 
 	@FXML
 	private TableColumn<Transaction, BigDecimal> amountColumn;
@@ -63,9 +67,14 @@ public class TransactionController {
 	private TableColumn<Transaction, String> descriptionColumn;
 
 	@FXML
+	private TableColumn<Transaction, String> walletColumn;
+
+	@FXML
 	private TableColumn<Transaction, LocalDate> DateColumn;
 
-	private List<Transaction> transactions = TransactionFactory.test();
+	private List<Transaction> transactions = TransactionFactory.getTransactionList();
+
+	private List<Wallet> wallet = WalletFactory.getWalletList();
 
 	// Initialize method called automatically after FXML is loaded
 	@FXML
@@ -122,13 +131,15 @@ public class TransactionController {
 		transactionTypeColumn.setCellValueFactory(
 				cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getTransactionType()));
 		categoryColumn.setCellValueFactory(
-				cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getCategoryId()));
+				cellData -> new javafx.beans.property.SimpleObjectProperty(cellData.getValue().getCategoryName()));
 		amountColumn.setCellValueFactory(
 				cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getAmount()));
 		descriptionColumn.setCellValueFactory(
 				cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDescription()));
 		DateColumn.setCellValueFactory(
 				cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getDate()));
+		walletColumn.setCellValueFactory(
+				cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getWalletName()));
 	}
 
 	// Filter transactions based on ComboBox selection
@@ -194,17 +205,27 @@ public class TransactionController {
 	// Handle button click to navigate to AddTransactionPage
 	@FXML
 	public void AddTransactionButtonOnAction(ActionEvent event) {
+		int size = wallet.size();
+		if (size <= 1) {
+			// Show an alert if there is only one wallet
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Add Wallet");
+			alert.setHeaderText("Insufficient Wallets");
+			alert.setContentText("Please add more wallets before creating a transaction.");
+			alert.showAndWait();
+			return; // Stop the method execution to prevent navigation
+		}
 		try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddTransaction.fxml"));
-            Scene registerScene = new Scene(loader.load());
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddTransaction.fxml"));
+			Scene registerScene = new Scene(loader.load());
 
-            Stage currentStage = (Stage) AddTransactionButton.getScene().getWindow();
+			Stage currentStage = (Stage) AddTransactionButton.getScene().getWindow();
 
-            currentStage.setScene(registerScene);
-            currentStage.setTitle("Register");
-            currentStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			currentStage.setScene(registerScene);
+			currentStage.setTitle("Register");
+			currentStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

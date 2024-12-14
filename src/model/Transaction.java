@@ -3,6 +3,9 @@ package model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import factory.CategoryFactory;
+import factory.WalletFactory;
+
 public abstract class Transaction {
     private int id;
     private int userId;
@@ -78,6 +81,21 @@ public abstract class Transaction {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+    public String getCategoryName() {
+        return CategoryFactory.getCategoryList().stream()
+                .filter(category -> category.getCategoryId() == this.categoryId)
+                .map(Category::getCategoryName)
+                .findFirst()
+                .orElse("Unknown Category");
+    }
+
+    public String getWalletName() {
+        return WalletFactory.getWalletList().stream()
+                .filter(wallet -> wallet.getWalletId() == this.walletId)
+                .map(Wallet::getWalletName)
+                .findFirst()
+                .orElse("Unknown Wallet");
     }
 
     // Abstract method to be implemented by subclasses
