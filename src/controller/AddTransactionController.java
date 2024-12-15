@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -23,10 +24,11 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
-import main.UserSession;
 import model.Category;
 import model.User;
 import model.Wallet;
+import util.ShowAlert;
+import util.UserSession;
 
 public class AddTransactionController {
     @FXML
@@ -149,15 +151,17 @@ public class AddTransactionController {
             }
 
             if (transactionType.equalsIgnoreCase("Income")) {
-                TransactionFactory.createTransaction(transactionType, currentUser.getUserId(), walletId, categoryId, amount, description, date);
+                TransactionFactory.createTransaction(transactionType, currentUser.getUserId(), walletId, categoryId,
+                        amount, description, date);
                 selectedWallet.setBalance(selectedWallet.getBalance().add(amount));
             } else if (transactionType.equalsIgnoreCase("Expense")) {
-                TransactionFactory.createTransaction(transactionType, currentUser.getUserId(), walletId, categoryId, amount, description, date);
+                TransactionFactory.createTransaction(transactionType, currentUser.getUserId(), walletId, categoryId,
+                        amount, description, date);
                 selectedWallet.setBalance(selectedWallet.getBalance().subtract(amount));
             }
-        
+
             // Display success message
-            successLabel.setText("Transaction created successfully!");
+            ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Add Transaction is Successful", "Transaction is Created", "The Transaction was created successfully!");
 
             navigateToTransactionPage();
 
@@ -166,13 +170,14 @@ public class AddTransactionController {
             successLabel.setText("Invalid amount format.");
         }
     }
+
     private void navigateToTransactionPage() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Transaction.fxml"));
             Scene transactionScene = new Scene(loader.load());
-    
+
             Stage currentStage = (Stage) createTransactionButton.getScene().getWindow();
-    
+
             currentStage.setScene(transactionScene);
             currentStage.setTitle("Transactions");
             currentStage.show();
@@ -181,8 +186,9 @@ public class AddTransactionController {
             successLabel.setText("Error loading the transaction page.");
         }
     }
+
     @FXML
-    public void BackButtonOnAction(ActionEvent event){
+    public void BackButtonOnAction(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Transaction.fxml"));
             Scene registerScene = new Scene(loader.load());
@@ -196,8 +202,9 @@ public class AddTransactionController {
             e.printStackTrace();
         }
     }
+
     @FXML
-    public void AddCategoryButtonOnAction(){
+    public void AddCategoryButtonOnAction() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddCategory.fxml"));
             Scene registerScene = new Scene(loader.load());

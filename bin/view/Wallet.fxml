@@ -17,8 +17,13 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #474747;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WalletController">
     <!-- Include the navbar -->
     <top>
-        <fx:include source="navbar.fxml" />
-    </top>
+      <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="900.0" style="-fx-background-color: #00994C;" BorderPane.alignment="CENTER">
+         <children>
+            <fx:include prefWidth="805.0" source="navbar.fxml" />
+            <fx:include prefWidth="85.0" source="logout.fxml" />
+         </children>
+      </HBox>
+   </top>
 
     <!-- Optional: You can add content to the other sections as well -->
     <left>

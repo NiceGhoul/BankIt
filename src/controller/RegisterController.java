@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -14,9 +15,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import observer.UserObserver;
-
-public class RegisterController implements UserObserver{
+import util.ShowAlert;
+public class RegisterController{
 
 	@FXML
 	private ImageView ImageView;
@@ -48,21 +48,17 @@ public class RegisterController implements UserObserver{
                 System.out.println("Passwords match. Creating user...");
                 UserFactory.createUser(username, password, email, confirmPassword);
                 System.out.println("User added. Redirecting to login...");
+				ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Register is Successful", "Register is SuccesFull", "The Register is successfull!\nRedirecting to login page");
                 redirectToLogin();
             } else {
                 System.out.println("Passwords do not match.");
-                onUser(false, "Password do not match.");
+				RegisterMessageLabel.setText("Password do not match.");
+				
             }
         } else {
             System.out.println("Fields are not filled.");
-            onUser(false, "Please fill all the fields.");
+			RegisterMessageLabel.setText("Please fill all the fields.");
         }
-    }
-	@Override
-	public void onUser(boolean success, String message) {
-        // Update the message label in the UI
-		RegisterMessageLabel.setText(message);
-	    
     }
 	private void redirectToLogin() {
 	    try {
@@ -109,6 +105,4 @@ public class RegisterController implements UserObserver{
 	        // Handle the exception (e.g., show an error message to the user)
 	    }
 	}
-
-	
 }
