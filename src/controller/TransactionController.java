@@ -19,6 +19,8 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import model.Expense;
+import model.Income;
 import model.Transaction;
 import model.Wallet;
 import util.UserSession;
@@ -172,12 +174,14 @@ public class TransactionController {
 	// workbook.write(fileOut);
 	// fileOut.close();
 
-	// ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Export Successful", "Data has been
+	// ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Export Successful", "Data
+	// has been
 	// exported to Excel successfully!");
 
 	// } catch (IOException e) {
 	// e.printStackTrace();
-	// ShowAlert.showAlert(Alert.AlertType.ERROR, "Export Failed", "An error occurred while
+	// ShowAlert.showAlert(Alert.AlertType.ERROR, "Export Failed", "An error
+	// occurred while
 	// exporting to Excel.");
 	// }
 	// }
@@ -221,12 +225,14 @@ public class TransactionController {
 	// document.add(table);
 	// document.close();
 
-	// ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Export Successful", "Data has been
+	// ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Export Successful", "Data
+	// has been
 	// exported to PDF successfully!");
 
 	// } catch (Exception e) {
 	// e.printStackTrace();
-	// ShowAlert.showAlert(Alert.AlertType.ERROR, "Export Failed", "An error occurred while
+	// ShowAlert.showAlert(Alert.AlertType.ERROR, "Export Failed", "An error
+	// occurred while
 	// exporting to PDF.");
 	// }
 	// }
@@ -308,11 +314,11 @@ public class TransactionController {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateTransaction.fxml"));
 			Scene updateScene = new Scene(loader.load());
-	
+
 			// Get the controller and pass the transaction data
 			UpdateTransactionController controller = loader.getController();
 			controller.setTransactionData(transaction);
-	
+
 			// Get current stage and set the new scene
 			Stage currentStage = (Stage) transactionTableView.getScene().getWindow();
 			currentStage.setScene(updateScene);
@@ -323,9 +329,23 @@ public class TransactionController {
 		}
 	}
 
+	private Wallet getWalletById(int walletId) {
+		return wallet.stream()
+				.filter(wallet -> wallet.getWalletId() == walletId)
+				.findFirst()
+				.orElse(null);
+	}
+
 	private void deleteTransaction(Transaction transaction) {
+		Wallet wallet = getWalletById(transaction.getWalletId());
+		if (transaction instanceof Income) {
+			wallet.setBalance(wallet.getBalance().subtract(transaction.getAmount()));
+		} else if (transaction instanceof Expense) {
+			wallet.setBalance(wallet.getBalance().add(transaction.getAmount()));
+		}
 		transactions.remove(transaction);
 		transactionTableView.setItems(FXCollections.observableArrayList(transactions));
+
 	}
 
 	// Filter transactions based on ComboBox selection
