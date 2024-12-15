@@ -92,7 +92,7 @@ public class TransactionController {
 	@FXML
 	private TableColumn<Transaction, LocalDate> DateColumn;
 
-//	private static List<Transaction> transactions = TransactionFactory.test();
+	private static List<Transaction> transactions2 = TransactionFactory.test();
 	@FXML
 	private TableColumn<Transaction, Void> actionColumn;
 
@@ -102,9 +102,9 @@ public class TransactionController {
 
 	// Initialize method called automatically after FXML is loaded
 	
-//	public static List<Transaction> getTransactions() {
-//	    return transactions;
-//	}
+	public static List<Transaction> getTransactions2() {
+	    return transactions2;
+	}
 
 	@FXML
 	private void initialize() {
