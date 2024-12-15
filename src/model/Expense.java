@@ -13,4 +13,5 @@ public class Expense extends Transaction {
     public String getTransactionType() {
         return "Expense";
     }
+    
 }
