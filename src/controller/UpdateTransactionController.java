@@ -110,6 +110,7 @@ public class UpdateTransactionController {
                 .findFirst()
                 .orElse(null);
     }
+
     private Wallet getWalletById(int walletId) {
         return walletList.stream()
                 .filter(wallet -> wallet.getWalletId() == walletId)
@@ -125,6 +126,77 @@ public class UpdateTransactionController {
                 .orElse(null);
     }
 
+    // @FXML
+    // public void updateTransactionButtonOnAction(ActionEvent event) {
+    // try {
+    // String walletName = walletComboBox.getValue();
+    // String categoryName = categoryComboBox.getValue();
+    // String amountText = amountTextField.getText();
+    // String description = descriptionTextField.getText();
+    // LocalDate date = datePicker.getValue();
+    // String transactionType = incomeRadioButton.isSelected() ? "Income" :
+    // "Expense";
+
+    // if (walletName == null || categoryName == null || amountText.isEmpty() ||
+    // description.isEmpty()
+    // || date == null) {
+    // successLabel.setText("Please fill all the fields!");
+    // return;
+    // }
+
+    // BigDecimal amount = new BigDecimal(amountText);
+
+    // int walletId = getWalletIdByName(walletName);
+    // Wallet wallet = getWalletById(walletId);
+    // int categoryId = getCategoryIdByName(categoryName);
+
+    // if (walletId == -1 || categoryId == -1) {
+    // successLabel.setText("Invalid wallet or category selection!");
+    // return;
+    // }
+
+    // if (currentTransaction instanceof Income) {
+    // wallet.setBalance(wallet.getBalance().subtract(currentTransaction.getAmount()));
+    // } else if (currentTransaction instanceof Expense) {
+    // wallet.setBalance(wallet.getBalance().add(currentTransaction.getAmount()));
+    // }
+
+    // // Update the current transaction with new data
+    // currentTransaction.setWalletId(walletId);
+    // currentTransaction.setCategoryId(categoryId);
+    // currentTransaction.setAmount(amount);
+    // currentTransaction.setDescription(description);
+    // currentTransaction.setDate(date);
+
+    // if (transactionType.equals("Income") && currentTransaction instanceof
+    // Expense) {
+    // currentTransaction =
+    // TransactionAdapter.convertExpenseToIncome(currentTransaction);
+    // wallet.setBalance(wallet.getBalance().add(amount));
+    // } else if (transactionType.equals("Expense") && currentTransaction instanceof
+    // Income) {
+    // currentTransaction =
+    // TransactionAdapter.convertIncomeToExpense(currentTransaction);
+    // wallet.setBalance(wallet.getBalance().subtract(amount));
+    // } else{
+    // if (currentTransaction instanceof Income) {
+    // wallet.setBalance(wallet.getBalance().add(amount));
+    // } else if (currentTransaction instanceof Expense) {
+    // wallet.setBalance(wallet.getBalance().subtract(amount));
+    // }
+    // }
+
+    // updateTransactionInDataSource(currentTransaction);
+
+    // ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Update Transaction is
+    // Successful",
+    // "Transaction is updated!", "The Transaction was updated successfully!");
+    // navigateToTransactionPage();
+    // } catch (NumberFormatException e) {
+    // successLabel.setText("Invalid amount format!");
+    // }
+    // }
+
     @FXML
     public void updateTransactionButtonOnAction(ActionEvent event) {
         try {
@@ -134,7 +206,6 @@ public class UpdateTransactionController {
             String description = descriptionTextField.getText();
             LocalDate date = datePicker.getValue();
             String transactionType = incomeRadioButton.isSelected() ? "Income" : "Expense";
-            
 
             if (walletName == null || categoryName == null || amountText.isEmpty() || description.isEmpty()
                     || date == null) {
@@ -144,63 +215,66 @@ public class UpdateTransactionController {
 
             BigDecimal amount = new BigDecimal(amountText);
 
-            int walletId = getWalletIdByName(walletName);
-            Wallet wallet = getWalletById(walletId);
+            int newWalletId = getWalletIdByName(walletName);
+            Wallet newWallet = getWalletById(newWalletId);
             int categoryId = getCategoryIdByName(categoryName);
 
-            if (walletId == -1 || categoryId == -1) {
+            if (newWalletId == -1 || categoryId == -1) {
                 successLabel.setText("Invalid wallet or category selection!");
                 return;
             }
+
+            Wallet oldWallet = getWalletById(currentTransaction.getWalletId());
+
+            // Revert the old wallet's balance based on the current transaction type
             if (currentTransaction instanceof Income) {
-                wallet.setBalance(wallet.getBalance().subtract(currentTransaction.getAmount()));
+                oldWallet.setBalance(oldWallet.getBalance().subtract(currentTransaction.getAmount()));
             } else if (currentTransaction instanceof Expense) {
-                wallet.setBalance(wallet.getBalance().add(currentTransaction.getAmount()));
+                oldWallet.setBalance(oldWallet.getBalance().add(currentTransaction.getAmount()));
             }
-            
+
+            // Check if transaction type needs to be converted
+            if (transactionType.equals("Income") && currentTransaction instanceof Expense) {
+                currentTransaction = TransactionAdapter.convertExpenseToIncome(currentTransaction);
+            } else if (transactionType.equals("Expense") && currentTransaction instanceof Income) {
+                currentTransaction = TransactionAdapter.convertIncomeToExpense(currentTransaction);
+            }
+
             // Update the current transaction with new data
-            currentTransaction.setWalletId(walletId);
+            currentTransaction.setWalletId(newWalletId);
             currentTransaction.setCategoryId(categoryId);
             currentTransaction.setAmount(amount);
             currentTransaction.setDescription(description);
             currentTransaction.setDate(date);
 
-
-
-            if (transactionType.equals("Income") && currentTransaction instanceof Expense) {
-                currentTransaction = TransactionAdapter.convertExpenseToIncome(currentTransaction);
-                wallet.setBalance(wallet.getBalance().add(amount));
-            } else if (transactionType.equals("Expense") && currentTransaction instanceof Income) {
-                currentTransaction = TransactionAdapter.convertIncomeToExpense(currentTransaction);
-                wallet.setBalance(wallet.getBalance().subtract(amount));
-            } else{
-                if (currentTransaction instanceof Income) {
-                    wallet.setBalance(wallet.getBalance().add(amount));
-                } else if (currentTransaction instanceof Expense) {
-                    wallet.setBalance(wallet.getBalance().subtract(amount));
-                }
+            // Apply the new wallet's balance based on the updated transaction type
+            if (currentTransaction instanceof Income) {
+                newWallet.setBalance(newWallet.getBalance().add(amount));
+            } else if (currentTransaction instanceof Expense) {
+                newWallet.setBalance(newWallet.getBalance().subtract(amount));
             }
 
             updateTransactionInDataSource(currentTransaction);
 
-            ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Update Transaction is Successful",
-                    "Transaction is updated!", "The Transaction was updated successfully!");
+            ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Update Transaction Successful",
+                    "Transaction Updated", "The transaction was updated successfully!");
+
             navigateToTransactionPage();
+
         } catch (NumberFormatException e) {
             successLabel.setText("Invalid amount format!");
         }
     }
 
     private void updateTransactionInDataSource(Transaction updatedTransaction) {
-    List<Transaction> transactions = TransactionFactory.getTransactionList();
-    for (int i = 0; i < transactions.size(); i++) {
-        if (transactions.get(i).getId() == updatedTransaction.getId()) {
-            transactions.set(i, updatedTransaction);
-            break;
+        List<Transaction> transactions = TransactionFactory.getTransactionList();
+        for (int i = 0; i < transactions.size(); i++) {
+            if (transactions.get(i).getId() == updatedTransaction.getId()) {
+                transactions.set(i, updatedTransaction);
+                break;
+            }
         }
     }
-}
-
 
     private void navigateToTransactionPage() {
         try {

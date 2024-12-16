@@ -150,6 +150,7 @@ public class AddTransactionController {
                 return;
             }
 
+
             if (transactionType.equalsIgnoreCase("Income")) {
                 TransactionFactory.createTransaction(transactionType, currentUser.getUserId(), walletId, categoryId,
                         amount, description, date);

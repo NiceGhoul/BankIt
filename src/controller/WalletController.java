@@ -60,10 +60,13 @@ public class WalletController {
 
 	private Wallet wallet;
 
+	private boolean needsRecalculation = false;
+
 	@FXML
 	public void initialize() {
 		initializeTable();
 		initializeWallet();
+		setWalletToOverallExpenditure(); // Ensure recalculation on initialization
 		loadTransactionsForSelectedWallet();
 	}
 
@@ -83,20 +86,24 @@ public class WalletController {
 	}
 
 	public void initializeWallet() {
-
 		User currentUser = UserSession.getInstance().getCurrentUser();
-		BigDecimal total = countTotalWallet();
-		if (WalletFactory.getWalletList().isEmpty()) {
-			WalletFactory.createWallet(currentUser.getUserId(), "Overall Expenditure", "user overall wallet", total);
-			// WalletFactory.createWallet(currentUser.getUserId(), "Investment Wallet",
-			// "Investments Funds", new BigDecimal("10000.00"));
+
+		Wallet overallExpenditureWallet = WalletFactory.getWalletList().stream()
+				.filter(wallet -> wallet.getWalletName().equalsIgnoreCase("Overall Expenditure"))
+				.findFirst()
+				.orElse(null);
+
+		if (overallExpenditureWallet == null) {
+			WalletFactory.createWallet(currentUser.getUserId(), "Overall Expenditure", "User overall wallet",
+					BigDecimal.ZERO);
+			needsRecalculation = true;
 		}
 
 		ObservableList<Wallet> wallets = FXCollections.observableArrayList(WalletFactory.getWalletList());
 
-		for (Wallet w : wallets) {
-			walletDropdown.getItems().add(w.getWalletName());
-		}
+		walletDropdown.setItems(FXCollections.observableArrayList(wallets.stream()
+				.map(Wallet::getWalletName)
+				.collect(Collectors.toList())));
 
 		if (!wallets.isEmpty()) {
 			wallet = wallets.get(0);
@@ -106,8 +113,10 @@ public class WalletController {
 		}
 
 		walletDropdown.setOnAction(event -> handleWalletSelection(wallets));
-		updateMainWallet();
-		loadTransactionsForSelectedWallet();
+
+		if (needsRecalculation) {
+			setWalletToOverallExpenditure();
+		}
 	}
 
 	public void initializeTable() {
@@ -154,33 +163,17 @@ public class WalletController {
 
 				System.out.println("Selected Wallet ID: " + wallet.getWalletId());
 				wallet = w;
-				update();
-				loadTransactionsForSelectedWallet();
-
 				if ("Overall Expenditure".equals(wallet.getWalletName())) {
-					updateMainWallet();
+					// Ensure recalculation happens when selecting Overall Expenditure
+					needsRecalculation = true;
+					setWalletToOverallExpenditure();
+				} else {
+					update();
+					loadTransactionsForSelectedWallet();
 				}
+				// }
 				break;
 			}
-		}
-	}
-
-	@FXML
-	public void GoToAddWalletScene() {
-
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddWallet.fxml"));
-			Scene addWallet = new Scene(loader.load());
-
-			Stage stage = (Stage) addWalletButton.getScene().getWindow();
-
-			stage.setScene(addWallet);
-			stage.setTitle("Add New Wallet");
-			stage.show();
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
 		}
 	}
 
@@ -196,54 +189,120 @@ public class WalletController {
 		}
 	}
 
-	public void deleteWalletButtonOnAction(){
+	public void deleteWalletButtonOnAction() {
 		String selectedWalletName = walletDropdown.getValue();
-		if(selectedWalletName.equals("Overall Expenditure")){
-			ShowAlert.showAlert(Alert.AlertType.INFORMATION, "This wallet can't be deleted", "Delete Confirmation", "This overall expenditure cannot be deleted.");
+
+		if (selectedWalletName == null) {
+			ShowAlert.showAlert(Alert.AlertType.WARNING, "No Wallet Selected", "Delete Wallet",
+					"Please select a wallet to delete.");
 			return;
 		}
-		ShowAlert.showAlert(Alert.AlertType.CONFIRMATION,"Delete Wallet", "Delete Wallet", "Are you sure you want to delete this wallet?");
-		int walletId = getWalletIdByName(selectedWalletName);
-		WalletFactory.getWalletList().removeIf(wallet -> wallet.getWalletId() == walletId);
-		TransactionFactory.getTransactionList().removeIf(transaction -> transaction.getWalletId() == walletId);
-		setWalletToOverallExpenditure();
+
+		if (selectedWalletName.equals("Overall Expenditure")) {
+			ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Cannot Delete", "Delete Confirmation",
+					"This overall expenditure cannot be deleted.");
+			return;
+		}
+
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Delete Wallet");
+		alert.setHeaderText("Delete Wallet");
+		alert.setContentText("Are you sure you want to delete the wallet: " + selectedWalletName + "?");
+
+		alert.showAndWait().ifPresent(response -> {
+			if (response == javafx.scene.control.ButtonType.OK) {
+				int walletId = getWalletIdByName(selectedWalletName);
+
+				// Remove wallet and check if deletion was successful
+				boolean walletRemoved = WalletFactory.getWalletList()
+						.removeIf(wallet -> wallet.getWalletId() == walletId);
+
+				if (walletRemoved) {
+					System.out.println("Wallet deleted successfully: " + selectedWalletName);
+
+					// Remove associated transactions
+					TransactionFactory.getTransactionList()
+							.removeIf(transaction -> transaction.getWalletId() == walletId);
+					System.out.println("Remaining Transactions: " + TransactionFactory.getTransactionList());
+
+					needsRecalculation = true;
+					setWalletToOverallExpenditure(); // Recalculate the overall expenditure
+					refreshWalletDropdown(); // Refresh the dropdown to reflect changes
+
+					// Select the first wallet after deletion
+					if (!WalletFactory.getWalletList().isEmpty()) {
+						walletDropdown.getSelectionModel().selectFirst();
+						wallet = WalletFactory.getWalletList().get(0);
+						update();
+						loadTransactionsForSelectedWallet();
+					}
+				} else {
+					ShowAlert.showAlert(Alert.AlertType.ERROR, "Delete Failed", "Error",
+							"Failed to delete the wallet.");
+				}
+			}
+		});
 	}
 
 	private void setWalletToOverallExpenditure() {
-		// Refresh the wallet dropdown with the updated wallet list
-		walletDropdown.setItems(FXCollections.observableArrayList(
-			WalletFactory.getWalletList().stream()
-				.map(Wallet::getWalletName)
-				.collect(Collectors.toList())
-		));
-	
-		Wallet overallExpenditureWallet = WalletFactory.getWalletList().stream()
+		System.out.println("Recalculating Overall Expenditure...");
+
+		List<Wallet> wallets = WalletFactory.getWalletList();
+		wallets.forEach(w -> System.out.println("Wallet: " + w.getWalletName() + ", Balance: " + w.getBalance()));
+
+		Wallet overallExpenditureWallet = wallets.stream()
 				.filter(wallet -> wallet.getWalletName().equalsIgnoreCase("Overall Expenditure"))
 				.findFirst()
 				.orElse(null);
-	
+
 		if (overallExpenditureWallet != null) {
+			BigDecimal totalBalance = wallets.stream()
+					.filter(wallet -> !wallet.getWalletName().equalsIgnoreCase("Overall Expenditure"))
+					.map(Wallet::getBalance)
+					.reduce(BigDecimal.ZERO, BigDecimal::add);
+
+			System.out.println("Total Balance: " + totalBalance);
+
+			overallExpenditureWallet.setBalance(totalBalance);
+			System.out.println("Updated Overall Expenditure Balance: " + overallExpenditureWallet.getBalance());
+
 			walletDropdown.setValue(overallExpenditureWallet.getWalletName());
 			wallet = overallExpenditureWallet;
+
 			update();
 			loadTransactionsForSelectedWallet();
-		} else {
-			User currentUser = UserSession.getInstance().getCurrentUser();
-			WalletFactory.createWallet(currentUser.getUserId(), "Overall Expenditure", "User overall wallet", BigDecimal.ZERO);
-			refreshWalletDropdown();
+		}
+	}
+
+	@FXML
+	public void GoToAddWalletScene() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AddWallet.fxml"));
+			Scene addWalletScene = new Scene(loader.load());
+
+			Stage stage = (Stage) addWalletButton.getScene().getWindow();
+			stage.setScene(addWalletScene);
+			stage.setTitle("Add New Wallet");
+
+			stage.showAndWait(); // Wait for the Add Wallet window to close before continuing
+
+			// Force recalculation of the Overall Expenditure wallet
+			System.out.println("Returning from Add Wallet scene. Triggering recalculation.");
 			setWalletToOverallExpenditure();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
 	private void refreshWalletDropdown() {
 		walletDropdown.setItems(FXCollections.observableArrayList(
-			WalletFactory.getWalletList().stream()
-				.map(Wallet::getWalletName)
-				.collect(Collectors.toList())
-		));
+				WalletFactory.getWalletList().stream()
+						.map(Wallet::getWalletName)
+						.collect(Collectors.toList())));
+
+		// Force recalculation after refreshing the dropdown
+		setWalletToOverallExpenditure();
 	}
-	
-	
 
 	private int getWalletIdByName(String walletName) {
 		return WalletFactory.getWalletList().stream()
@@ -252,7 +311,6 @@ public class WalletController {
 				.findFirst()
 				.orElse(-1);
 	}
-	
 
 	@FXML
 	public void logoutButtonOnAction(ActionEvent event) {
@@ -272,8 +330,9 @@ public class WalletController {
 			currentStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
-			ShowAlert.showAlert(Alert.AlertType.ERROR, "Logout Failed", "An error occurred while logging out.", "Please try again.");
+			ShowAlert.showAlert(Alert.AlertType.ERROR, "Logout Failed", "An error occurred while logging out.",
+					"Please try again.");
 		}
 	}
-	
+
 }
