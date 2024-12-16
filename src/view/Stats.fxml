@@ -1,24 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StatsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #474747;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StatsController">
     <!-- Include the navbar -->
     <top>
         <fx:include prefWidth="805.0" source="navbar.fxml" />
-   </top>
+    </top>
 
-    <!-- Optional: You can add content to the other sections as well -->
-    <left>
-        <!-- Left content here -->
-    </left>
-    
-    <right>
-        <!-- Right content here -->
-    </right>
-    
     <center>
-        <!-- Center content here -->
-    </center>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <!-- HBox for Date, Month, Year, and Filter Selection -->
+                <HBox alignment="CENTER" prefHeight="47.0" prefWidth="900.0" spacing="15">
+                    <children>
+                        <ComboBox fx:id="dateComboBox" prefHeight="26.0" prefWidth="120.0" promptText="Date" />
+                        <Region prefWidth="20.0" />
+                        <ComboBox fx:id="monthComboBox" prefHeight="26.0" prefWidth="120.0" promptText="Month" />
+                        <Region prefWidth="20.0" />
+                        <ComboBox fx:id="yearComboBox" prefHeight="26.0" prefWidth="120.0" promptText="Year" />
+                        <Region prefWidth="20.0" />
+                        <ComboBox fx:id="filterComboBox" prefHeight="35.0" prefWidth="148.0" promptText="Show All" />
+                    </children>
+                </HBox>
 
+                <!-- AnchorPane for displaying the chart -->
+                <AnchorPane fx:id="chartContainer" prefHeight="363.0" prefWidth="900.0" />
+
+                <!-- HBox for displaying the income and expense details -->
+                <HBox alignment="CENTER" spacing="20">
+                    <children>
+                        <Region prefWidth="20.0" />
+                    </children>
+                </HBox>
+            <TableView fx:id="detailsTable" prefHeight="118.0" prefWidth="900.0">
+              <columns>
+                <TableColumn fx:id="categoryColumn" prefWidth="249.0" text="Categories" />
+                <TableColumn fx:id="amountColumn" prefWidth="642.0" text="Amount" />
+              </columns>
+            </TableView>
+            </children>
+        </VBox>
+    </center>
 </BorderPane>
