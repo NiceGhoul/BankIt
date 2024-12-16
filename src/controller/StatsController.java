@@ -26,6 +26,8 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import factory.TransactionFactory;
+
 public class StatsController implements Initializable {
 
     @FXML
@@ -136,8 +138,8 @@ public class StatsController implements Initializable {
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
         // Optional: Set cell styles for better visibility
-        categoryColumn.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
-        amountColumn.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
+        categoryColumn.setStyle("-fx-text-fill: black; -fx-font-size: 12px;");
+        amountColumn.setStyle("-fx-text-fill: black; -fx-font-size: 12px;");
     }
 
     private void updateChart() {
@@ -146,7 +148,7 @@ public class StatsController implements Initializable {
         String selectedYear = yearComboBox.getValue();
         String selectedFilter = filterComboBox.getValue();
 
-        List<Transaction> transactions = TransactionController.getTransactions2().stream()
+        List<Transaction> transactions = TransactionFactory.getTransactionList().stream()
                 .filter(t -> t.getDate().getMonthValue() == monthComboBox.getItems().indexOf(selectedMonth) + 1
                         && t.getDate().getYear() == Integer.parseInt(selectedYear))
                 .collect(Collectors.toList());

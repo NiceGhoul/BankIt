@@ -31,8 +31,6 @@ import util.ShowAlert;
 
 // import org.apache.poi.ss.usermodel.*;
 // import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-// import com.itextpdf.text.*;
-// import com.itextpdf.text.pdf.*;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -47,6 +45,9 @@ public class TransactionController {
 	private Button AddTransactionButton;
 
 	@FXML
+	private Button exportButton;
+
+	@FXML
 	private ComboBox<String> dateComboBox;
 
 	@FXML
@@ -58,8 +59,6 @@ public class TransactionController {
 	@FXML
 	private ComboBox<String> typeComboBox;
 
-	@FXML
-	private ComboBox<String> exportComboBox;
 
 	@FXML
 	private Hyperlink logoutButton;
@@ -93,8 +92,6 @@ public class TransactionController {
 
 	@FXML
 	private TableColumn<Transaction, LocalDate> DateColumn;
-
-	private static List<Transaction> transactions2 = TransactionFactory.test();
 	@FXML
 	private TableColumn<Transaction, Void> actionColumn;
 
@@ -103,10 +100,6 @@ public class TransactionController {
 	private List<Wallet> wallet = WalletFactory.getWalletList();
 
 	// Initialize method called automatically after FXML is loaded
-	
-	public static List<Transaction> getTransactions2() {
-	    return transactions2;
-	}
 
 	@FXML
 	private void initialize() {
@@ -128,121 +121,55 @@ public class TransactionController {
 		monthComboBox.setOnAction(event -> filterTransactions());
 	}
 
-	private void setupExportComboBox() {
-		ObservableList<String> exportOptions = FXCollections.observableArrayList("Export to Excel", "Export to PDF");
-		exportComboBox.setItems(exportOptions);
-		// exportComboBox.setOnAction(event -> handleExportAction());
+	@FXML
+	private void exportButtonOnAction(){
+		exportToExcel();
 	}
 
-	// private void handleExportAction() {
-	// String selectedOption = exportComboBox.getValue();
-	// if ("Export to Excel".equals(selectedOption)) {
-	// exportToExcel();
-	// } else if ("Export to PDF".equals(selectedOption)) {
-	// exportToPDF();
-	// }
-	// }
-	// private void exportToExcel() {
-	// FileChooser fileChooser = new FileChooser();
-	// fileChooser.setTitle("Save Excel File");
-	// fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel
-	// Files", "*.xlsx"));
-	// Stage stage = (Stage) exportComboBox.getScene().getWindow();
-	// java.io.File file = fileChooser.showSaveDialog(stage);
+	private void exportToExcel() {
+        // FileChooser fileChooser = new FileChooser();
+        // fileChooser.setTitle("Save Excel File");
+        // fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+        // Stage stage = (Stage) exportComboBox.getScene().getWindow();
+        // java.io.File file = fileChooser.showSaveDialog(stage);
 
-	// if (file != null) {
-	// try (Workbook workbook = new XSSFWorkbook()) {
-	// Sheet sheet = workbook.createSheet("Transactions");
+        // if (file != null) {
+        //     try (Workbook workbook = new XSSFWorkbook()) {
+        //         Sheet sheet = workbook.createSheet("Transactions");
 
-	// // Create header row
-	// Row headerRow = sheet.createRow(0);
-	// String[] headers = {"Transaction Type", "Wallet", "Category", "Amount",
-	// "Description", "Date"};
-	// for (int i = 0; i < headers.length; i++) {
-	// Cell cell = headerRow.createCell(i);
-	// cell.setCellValue(headers[i]);
-	// }
+        //         // Create header row
+        //         Row headerRow = sheet.createRow(0);
+        //         String[] headers = {"Transaction Type", "Wallet", "Category", "Amount", "Description", "Date"};
+        //         for (int i = 0; i < headers.length; i++) {
+        //             Cell cell = headerRow.createCell(i);
+        //             cell.setCellValue(headers[i]);
+        //         }
 
-	// // Populate data rows
-	// int rowNum = 1;
-	// for (Transaction transaction : transactions) {
-	// Row row = sheet.createRow(rowNum++);
-	// row.createCell(0).setCellValue(transaction.getTransactionType());
-	// row.createCell(1).setCellValue(transaction.getWalletName());
-	// row.createCell(2).setCellValue(transaction.getCategoryName());
-	// row.createCell(3).setCellValue(transaction.getAmount().toString());
-	// row.createCell(4).setCellValue(transaction.getDescription());
-	// row.createCell(5).setCellValue(transaction.getDate().toString());
-	// }
+        //         // Populate data rows
+        //         int rowNum = 1;
+        //         for (Transaction transaction : transactions) {
+        //             Row row = sheet.createRow(rowNum++);
+        //             row.createCell(0).setCellValue(transaction.getTransactionType());
+        //             row.createCell(1).setCellValue(transaction.getWalletName());
+        //             row.createCell(2).setCellValue(transaction.getCategoryName());
+        //             row.createCell(3).setCellValue(transaction.getAmount().toString());
+        //             row.createCell(4).setCellValue(transaction.getDescription());
+        //             row.createCell(5).setCellValue(transaction.getDate().toString());
+        //         }
 
-	// // Write the output to a file
-	// FileOutputStream fileOut = new FileOutputStream(file);
-	// workbook.write(fileOut);
-	// fileOut.close();
+        //         // Write the output to a file
+        //         try (FileOutputStream fileOut = new FileOutputStream(file)) {
+        //             workbook.write(fileOut);
+        //         }
 
-	// ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Export Successful", "Data
-	// has been
-	// exported to Excel successfully!");
+        //         ShowAlert.showAlert(Alert.AlertType.INFORMATION,"Export Succesful", "Export Successful", "Data has been exported to Excel successfully!");
+        //     } catch (IOException e) {
+        //         e.printStackTrace();
+        //         ShowAlert.showAlert(Alert.AlertType.ERROR,"Export Failed", "Export Failed", "An error occurred while exporting to Excel.");
+        //     }
+        // }
+    }
 
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// ShowAlert.showAlert(Alert.AlertType.ERROR, "Export Failed", "An error
-	// occurred while
-	// exporting to Excel.");
-	// }
-	// }
-	// }
-
-	// private void exportToPDF() {
-	// FileChooser fileChooser = new FileChooser();
-	// fileChooser.setTitle("Save PDF File");
-	// fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF
-	// Files", "*.pdf"));
-	// Stage stage = (Stage) exportComboBox.getScene().getWindow();
-	// java.io.File file = fileChooser.showSaveDialog(stage);
-
-	// if (file != null) {
-	// Document document = new Document();
-	// try {
-	// PdfWriter.getInstance(document, new FileOutputStream(file));
-	// document.open();
-
-	// // Add Title
-	// document.add(new Paragraph("Transaction List\n\n"));
-
-	// // Create table
-	// PdfPTable table = new PdfPTable(6);
-	// table.addCell("Transaction Type");
-	// table.addCell("Wallet");
-	// table.addCell("Category");
-	// table.addCell("Amount");
-	// table.addCell("Description");
-	// table.addCell("Date");
-
-	// for (Transaction transaction : transactions) {
-	// table.addCell(transaction.getTransactionType());
-	// table.addCell(transaction.getWalletName());
-	// table.addCell(transaction.getCategoryName());
-	// table.addCell(transaction.getAmount().toString());
-	// table.addCell(transaction.getDescription());
-	// table.addCell(transaction.getDate().toString());
-	// }
-
-	// document.add(table);
-	// document.close();
-
-	// ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Export Successful", "Data
-	// has been
-	// exported to PDF successfully!");
-
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// ShowAlert.showAlert(Alert.AlertType.ERROR, "Export Failed", "An error
-	// occurred while
-	// exporting to PDF.");
-	// }
-	// }
-	// }
 
 	private void setupDateComboBox() {
 		ObservableList<String> dates = FXCollections.observableArrayList();
@@ -343,6 +270,8 @@ public class TransactionController {
 	}
 
 	private void deleteTransaction(Transaction transaction) {
+		ShowAlert.showAlert(Alert.AlertType.CONFIRMATION, "Delete Transaction", "Delete Transaction",
+				"Are you sure you want to delete this transaction");
 		Wallet wallet = getWalletById(transaction.getWalletId());
 		if (transaction instanceof Income) {
 			wallet.setBalance(wallet.getBalance().subtract(transaction.getAmount()));

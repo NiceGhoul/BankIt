@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,7 @@ public class WalletController {
 	@FXML
 	private Text balanceText, walletBalance;
 	@FXML
-	private Button addWalletButton, backButton;
+	private Button addWalletButton, backButton, deleteWalleButton;
 	@FXML
 	private Label walletName, AddLabel, descLabel;
 	@FXML
@@ -194,6 +195,65 @@ public class WalletController {
 			descLabel.setText(wallet.getDescription());
 		}
 	}
+
+	public void deleteWalletButtonOnAction(){
+		String selectedWalletName = walletDropdown.getValue();
+		if(selectedWalletName.equals("Overall Expenditure")){
+			ShowAlert.showAlert(Alert.AlertType.INFORMATION, "This wallet can't be deleted", "Delete Confirmation", "This overall expenditure cannot be deleted.");
+			return;
+		}
+		ShowAlert.showAlert(Alert.AlertType.CONFIRMATION,"Delete Wallet", "Delete Wallet", "Are you sure you want to delete this wallet?");
+		int walletId = getWalletIdByName(selectedWalletName);
+		WalletFactory.getWalletList().removeIf(wallet -> wallet.getWalletId() == walletId);
+		TransactionFactory.getTransactionList().removeIf(transaction -> transaction.getWalletId() == walletId);
+		setWalletToOverallExpenditure();
+	}
+
+	private void setWalletToOverallExpenditure() {
+		// Refresh the wallet dropdown with the updated wallet list
+		walletDropdown.setItems(FXCollections.observableArrayList(
+			WalletFactory.getWalletList().stream()
+				.map(Wallet::getWalletName)
+				.collect(Collectors.toList())
+		));
+	
+		Wallet overallExpenditureWallet = WalletFactory.getWalletList().stream()
+				.filter(wallet -> wallet.getWalletName().equalsIgnoreCase("Overall Expenditure"))
+				.findFirst()
+				.orElse(null);
+	
+		if (overallExpenditureWallet != null) {
+			walletDropdown.setValue(overallExpenditureWallet.getWalletName());
+			wallet = overallExpenditureWallet;
+			update();
+			loadTransactionsForSelectedWallet();
+		} else {
+			User currentUser = UserSession.getInstance().getCurrentUser();
+			WalletFactory.createWallet(currentUser.getUserId(), "Overall Expenditure", "User overall wallet", BigDecimal.ZERO);
+			refreshWalletDropdown();
+			setWalletToOverallExpenditure();
+		}
+	}
+
+	private void refreshWalletDropdown() {
+		walletDropdown.setItems(FXCollections.observableArrayList(
+			WalletFactory.getWalletList().stream()
+				.map(Wallet::getWalletName)
+				.collect(Collectors.toList())
+		));
+	}
+	
+	
+
+	private int getWalletIdByName(String walletName) {
+		return WalletFactory.getWalletList().stream()
+				.filter(wallet -> wallet.getWalletName().equals(walletName))
+				.map(Wallet::getWalletId)
+				.findFirst()
+				.orElse(-1);
+	}
+	
+
 	@FXML
 	public void logoutButtonOnAction(ActionEvent event) {
 		// Clear the user session

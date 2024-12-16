@@ -60,7 +60,13 @@
                                 <Insets top="5.0" />
                             </HBox.margin>
                         </Button>
-                        <Region prefHeight="50.0" prefWidth="444.0" />
+                        <Region prefHeight="50.0" prefWidth="18.0" />
+                  <Button fx:id="deleteWalletButton" alignment="BOTTOM_CENTER" contentDisplay="BOTTOM" defaultButton="true" mnemonicParsing="false" onAction="#deleteWalletButtonOnAction" prefWidth="150.0" style="-fx-background-color: #ca3433;" text="Delete Wallet" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Region prefHeight="50.0" prefWidth="272.0" />
                         <ComboBox fx:id="walletDropdown" prefHeight="35.0" prefWidth="207.0">
                             <HBox.margin>
                                 <Insets right="10.0" top="5.0" />
