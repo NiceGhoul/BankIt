@@ -67,10 +67,8 @@ public class AddTransactionController {
     @FXML
     private Button AddCategoryButton;
 
-    // Sample data for wallets
     private ArrayList<Wallet> walletList = WalletFactory.getWalletList();
 
-    // Sample data for categories
     private ArrayList<Category> categoryList = CategoryFactory.getCategoryList();
 
     @FXML
@@ -161,12 +159,10 @@ public class AddTransactionController {
                 selectedWallet.setBalance(selectedWallet.getBalance().subtract(amount));
             }
 
-            // Display success message
             ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Add Transaction is Successful", "Transaction is Created", "The Transaction was created successfully!");
 
             navigateToTransactionPage();
 
-            // You can add logic to save this transaction to a database or list
         } catch (NumberFormatException e) {
             successLabel.setText("Invalid amount format.");
         }

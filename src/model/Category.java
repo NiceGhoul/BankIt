@@ -9,7 +9,6 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    // Getters and Setters
     public int getCategoryId() {
         return categoryId;
     }

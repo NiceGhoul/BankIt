@@ -62,47 +62,31 @@ public class RegisterController{
     }
 	private void redirectToLogin() {
 	    try {
-	        // Load the login FXML
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
 	        Scene loginScene = new Scene(loader.load());
 
-	        // Get the current stage (the main window)
 	        Stage currentStage = (Stage) RegisterButton.getScene().getWindow();
 
-	        // Set the new scene (login screen)
 	        currentStage.setScene(loginScene);
-
-	        // Optionally, you can change the window title
 	        currentStage.setTitle("Login");
-
-	        // Show the login window
 	        currentStage.show();
 	    } catch (IOException e) {
 	        e.printStackTrace();
-	        // Handle the exception (e.g., show an error message to the user)
 	    }
 	}
 	public void LoginButtonOnAction() {
 		try {
 			UserFactory.createUser("bertrand", "12345", "bertrand@gmail.com", "12345");
-	        // Load the Login FXML
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
 	        Scene loginScene = new Scene(loader.load());
 
-	        // Get the current stage (the main window)
 	        Stage currentStage = (Stage) LoginButton.getScene().getWindow();
 
-	        // Set the new scene (login screen)
 	        currentStage.setScene(loginScene);
-
-	        // Optionally, you can change the window title
 	        currentStage.setTitle("Login");
-
-	        // Show the login window
 	        currentStage.show();
 	    } catch (IOException e) {
 	        e.printStackTrace();
-	        // Handle the exception (e.g., show an error message to the user)
 	    }
 	}
 }

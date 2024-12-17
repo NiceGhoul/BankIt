@@ -74,14 +74,11 @@ public class LoginController {
     @FXML
     private void redirectToMainPage() {
         try {
-            // Load the main page FXML (for example, MainPage.fxml)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Wallet.fxml"));
             Scene mainScene = new Scene(loader.load());
 
-            // Get the current stage (login window)
             Stage currentStage = (Stage) loginButton.getScene().getWindow();
 
-            // Set the new scene (main application page)
             currentStage.setScene(mainScene);
             currentStage.setTitle("Wallet");
             currentStage.show();
@@ -95,14 +92,11 @@ public class LoginController {
     @FXML
     public void registerButtonOnAction() {
         try {
-            // Load the Register page FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Register.fxml"));
             Scene registerScene = new Scene(loader.load());
 
-            // Get the current stage (login window)
             Stage currentStage = (Stage) registerButton.getScene().getWindow();
 
-            // Set the new scene (registration page)
             currentStage.setScene(registerScene);
             currentStage.setTitle("Register");
             currentStage.show();

@@ -99,8 +99,6 @@ public class TransactionController {
 
 	private List<Wallet> wallet = WalletFactory.getWalletList();
 
-	// Initialize method called automatically after FXML is loaded
-
 	@FXML
 	private void initialize() {
 		setupDateComboBox();
@@ -108,11 +106,10 @@ public class TransactionController {
 		setupYearComboBox();
 		setupTypeComboBox();
 		setupTableView();
-		filterTransactions(); // Initial filter
+		filterTransactions(); 
 	}
 
 	private void setupMonthComboBox() {
-		// Populate monthComboBox with month names
 		ObservableList<String> months = FXCollections.observableArrayList(
 				"January", "February", "March", "April", "May", "June",
 				"July", "August", "September", "October", "November", "December");
@@ -127,53 +124,13 @@ public class TransactionController {
 	}
 
 	private void exportToExcel() {
-        // FileChooser fileChooser = new FileChooser();
-        // fileChooser.setTitle("Save Excel File");
-        // fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
-        // Stage stage = (Stage) exportComboBox.getScene().getWindow();
-        // java.io.File file = fileChooser.showSaveDialog(stage);
-
-        // if (file != null) {
-        //     try (Workbook workbook = new XSSFWorkbook()) {
-        //         Sheet sheet = workbook.createSheet("Transactions");
-
-        //         // Create header row
-        //         Row headerRow = sheet.createRow(0);
-        //         String[] headers = {"Transaction Type", "Wallet", "Category", "Amount", "Description", "Date"};
-        //         for (int i = 0; i < headers.length; i++) {
-        //             Cell cell = headerRow.createCell(i);
-        //             cell.setCellValue(headers[i]);
-        //         }
-
-        //         // Populate data rows
-        //         int rowNum = 1;
-        //         for (Transaction transaction : transactions) {
-        //             Row row = sheet.createRow(rowNum++);
-        //             row.createCell(0).setCellValue(transaction.getTransactionType());
-        //             row.createCell(1).setCellValue(transaction.getWalletName());
-        //             row.createCell(2).setCellValue(transaction.getCategoryName());
-        //             row.createCell(3).setCellValue(transaction.getAmount().toString());
-        //             row.createCell(4).setCellValue(transaction.getDescription());
-        //             row.createCell(5).setCellValue(transaction.getDate().toString());
-        //         }
-
-        //         // Write the output to a file
-        //         try (FileOutputStream fileOut = new FileOutputStream(file)) {
-        //             workbook.write(fileOut);
-        //         }
-
-        //         ShowAlert.showAlert(Alert.AlertType.INFORMATION,"Export Succesful", "Export Successful", "Data has been exported to Excel successfully!");
-        //     } catch (IOException e) {
-        //         e.printStackTrace();
-        //         ShowAlert.showAlert(Alert.AlertType.ERROR,"Export Failed", "Export Failed", "An error occurred while exporting to Excel.");
-        //     }
-        // }
+        
     }
 
 
 	private void setupDateComboBox() {
 		ObservableList<String> dates = FXCollections.observableArrayList();
-		dates.add(null); // Allow null value
+		dates.add(null);
 		for (int i = 1; i <= 31; i++) {
 			dates.add(String.valueOf(i));
 		}
@@ -183,7 +140,6 @@ public class TransactionController {
 	}
 
 	private void setupYearComboBox() {
-		// Populate yearComboBox with years from 2020 to current year
 		ObservableList<String> years = FXCollections.observableArrayList();
 		int currentYear = LocalDate.now().getYear();
 		for (int year = 2020; year <= currentYear; year++) {
@@ -248,11 +204,9 @@ public class TransactionController {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UpdateTransaction.fxml"));
 			Scene updateScene = new Scene(loader.load());
 
-			// Get the controller and pass the transaction data
 			UpdateTransactionController controller = loader.getController();
 			controller.setTransactionData(transaction);
 
-			// Get current stage and set the new scene
 			Stage currentStage = (Stage) transactionTableView.getScene().getWindow();
 			currentStage.setScene(updateScene);
 			currentStage.setTitle("Update Transaction");
@@ -283,7 +237,6 @@ public class TransactionController {
 
 	}
 
-	// Filter transactions based on ComboBox selection
 	private void filterTransactions() {
 		String selectedDate = dateComboBox.getValue();
 		String selectedMonth = monthComboBox.getValue();
@@ -292,7 +245,6 @@ public class TransactionController {
 
 		List<Transaction> filteredList = transactions;
 
-		// Filter by month and year
 		if (selectedMonth != null && selectedYear != null) {
 			int month = monthComboBox.getItems().indexOf(selectedMonth) + 1;
 			int year = Integer.parseInt(selectedYear);
@@ -301,7 +253,6 @@ public class TransactionController {
 					.collect(Collectors.toList());
 		}
 
-		// Filter by date if selected
 		if (selectedDate != null) {
 			int day = Integer.parseInt(selectedDate);
 			filteredList = filteredList.stream()
@@ -309,7 +260,6 @@ public class TransactionController {
 					.collect(Collectors.toList());
 		}
 
-		// Filter by transaction type if not "Show All"
 		if (type != null && !type.equalsIgnoreCase("Show All")) {
 			filteredList = filteredList.stream()
 					.filter(t -> t.getTransactionType().equalsIgnoreCase(type))
@@ -343,7 +293,6 @@ public class TransactionController {
 		totalText.setText(netTotal.toString());
 	}
 
-	// Handle button click to navigate to AddTransactionPage
 	@FXML
 	public void AddTransactionButtonOnAction(ActionEvent event) {
 		int size = wallet.size();

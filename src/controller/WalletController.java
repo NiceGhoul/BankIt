@@ -66,7 +66,7 @@ public class WalletController {
 	public void initialize() {
 		initializeTable();
 		initializeWallet();
-		setWalletToOverallExpenditure(); // Ensure recalculation on initialization
+		setWalletToOverallExpenditure(); 
 		loadTransactionsForSelectedWallet();
 	}
 
@@ -164,14 +164,12 @@ public class WalletController {
 				System.out.println("Selected Wallet ID: " + wallet.getWalletId());
 				wallet = w;
 				if ("Overall Expenditure".equals(wallet.getWalletName())) {
-					// Ensure recalculation happens when selecting Overall Expenditure
 					needsRecalculation = true;
 					setWalletToOverallExpenditure();
 				} else {
 					update();
 					loadTransactionsForSelectedWallet();
 				}
-				// }
 				break;
 			}
 		}
@@ -213,23 +211,20 @@ public class WalletController {
 			if (response == javafx.scene.control.ButtonType.OK) {
 				int walletId = getWalletIdByName(selectedWalletName);
 
-				// Remove wallet and check if deletion was successful
 				boolean walletRemoved = WalletFactory.getWalletList()
 						.removeIf(wallet -> wallet.getWalletId() == walletId);
 
 				if (walletRemoved) {
 					System.out.println("Wallet deleted successfully: " + selectedWalletName);
 
-					// Remove associated transactions
 					TransactionFactory.getTransactionList()
 							.removeIf(transaction -> transaction.getWalletId() == walletId);
 					System.out.println("Remaining Transactions: " + TransactionFactory.getTransactionList());
 
 					needsRecalculation = true;
-					setWalletToOverallExpenditure(); // Recalculate the overall expenditure
-					refreshWalletDropdown(); // Refresh the dropdown to reflect changes
+					setWalletToOverallExpenditure(); 
+					refreshWalletDropdown(); 
 
-					// Select the first wallet after deletion
 					if (!WalletFactory.getWalletList().isEmpty()) {
 						walletDropdown.getSelectionModel().selectFirst();
 						wallet = WalletFactory.getWalletList().get(0);
@@ -284,9 +279,8 @@ public class WalletController {
 			stage.setScene(addWalletScene);
 			stage.setTitle("Add New Wallet");
 
-			stage.showAndWait(); // Wait for the Add Wallet window to close before continuing
+			stage.showAndWait(); 
 
-			// Force recalculation of the Overall Expenditure wallet
 			System.out.println("Returning from Add Wallet scene. Triggering recalculation.");
 			setWalletToOverallExpenditure();
 		} catch (IOException e) {
@@ -299,8 +293,6 @@ public class WalletController {
 				WalletFactory.getWalletList().stream()
 						.map(Wallet::getWalletName)
 						.collect(Collectors.toList())));
-
-		// Force recalculation after refreshing the dropdown
 		setWalletToOverallExpenditure();
 	}
 
@@ -314,15 +306,12 @@ public class WalletController {
 
 	@FXML
 	public void logoutButtonOnAction(ActionEvent event) {
-		// Clear the user session
 		UserSession.getInstance().clearSession();
 
-		// Load the login page
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
 			Scene loginScene = new Scene(loader.load());
 
-			// Get the current stage
 			Stage currentStage = (Stage) logoutButton.getScene().getWindow();
 
 			currentStage.setScene(loginScene);

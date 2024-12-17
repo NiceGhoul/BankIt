@@ -19,14 +19,11 @@ public class NavbarController {
 	@FXML
 	private void WalletButtonOnAction() {
 		try {
-            // Load the main page FXML (for example, MainPage.fxml)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Wallet.fxml"));
             Scene mainScene = new Scene(loader.load());
 
-            // Get the current stage (login window)
             Stage currentStage = (Stage) WalletButton.getScene().getWindow();
 
-            // Set the new scene (main application page)
             currentStage.setScene(mainScene);
             currentStage.setTitle("Wallet");
             currentStage.show();
@@ -37,14 +34,11 @@ public class NavbarController {
 	@FXML
 	private void TransactionButtonOnAction() {
 		try {
-            // Load the main page FXML (for example, MainPage.fxml)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Transaction.fxml"));
             Scene mainScene = new Scene(loader.load());
 
-            // Get the current stage (login window)
             Stage currentStage = (Stage) TransactionButton.getScene().getWindow();
 
-            // Set the new scene (main application page)
             currentStage.setScene(mainScene);
             currentStage.setTitle("Transaction");
             currentStage.show();
@@ -56,14 +50,11 @@ public class NavbarController {
 	@FXML
 	private void StatsButtonOnAction() {
 		try {
-            // Load the main page FXML (for example, MainPage.fxml)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Stats.fxml"));
             Scene mainScene = new Scene(loader.load());
 
-            // Get the current stage (login window)
             Stage currentStage = (Stage) WalletButton.getScene().getWindow();
 
-            // Set the new scene (main application page)
             currentStage.setScene(mainScene);
             currentStage.setTitle("Stats");
             currentStage.show();

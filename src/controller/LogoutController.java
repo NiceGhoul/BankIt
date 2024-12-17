@@ -17,15 +17,11 @@ public class LogoutController {
     private Hyperlink logoutButton;
     @FXML
 	public void logoutButtonOnAction(ActionEvent event) {
-		// Clear the user session
 		UserSession.getInstance().clearSession();
-
-		// Load the login page
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
 			Scene loginScene = new Scene(loader.load());
 
-			// Get the current stage
 			Stage currentStage = (Stage)logoutButton.getScene().getWindow();
 
 			currentStage.setScene(loginScene);

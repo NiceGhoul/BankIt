@@ -9,7 +9,6 @@ public class WalletFactory {
 	private static Wallet wallet;
 	private static int walletId = 1;
 	private static ArrayList<Wallet> walletList = new ArrayList<>();
-//	private static int walletIdCounter = 1;
 	
 	public static void createWallet(int userId, String userName, String description, BigDecimal balance) {
 		wallet = new Wallet(walletId++, userId, userName, description, balance);

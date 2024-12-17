@@ -17,7 +17,6 @@ public class Wallet {
         this.balance = balance;
     }
 
-    // Getters and Setters
     public int getWalletId() {
         return walletId;
     }

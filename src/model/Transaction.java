@@ -15,7 +15,6 @@ public abstract class Transaction {
     private String description;
     private LocalDate date;
 
-    // Constructor
     public Transaction(int id, int userId, int walletId, int categoryId, BigDecimal amount, String description, LocalDate date) {
         this.id = id;
         this.userId = userId;
@@ -26,7 +25,6 @@ public abstract class Transaction {
         this.date = date;
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -98,6 +96,5 @@ public abstract class Transaction {
                 .orElse("Unknown Wallet");
     }
 
-    // Abstract method to be implemented by subclasses
     public abstract String getTransactionType();
 }

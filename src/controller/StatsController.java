@@ -54,7 +54,6 @@ public class StatsController implements Initializable {
     @FXML
     private TableColumn<TransactionDetail, String> amountColumn;
 
-    // Define color palettes for Income and Expense categories
     private final List<String> incomeColors = Arrays.asList(
             "#4CAF50", // Green
             "#8BC34A", // Light Green
@@ -68,7 +67,6 @@ public class StatsController implements Initializable {
             "#9C27B0", // Purple
             "#673AB7", // Deep Purple
             "#3F51B5"  // Indigo
-            // Add more colors as needed
         );
 
         private final List<String> expenseColors = Arrays.asList(
@@ -84,9 +82,7 @@ public class StatsController implements Initializable {
             "#8BC34A", // Light Green
             "#CDDC39", // Lime
             "#FFEB3B"  // Yellow
-            // Add more colors as needed
         );
-    // Map to hold category-color associations
     private Map<String, String> categoryColorMap = new HashMap<>();
 
     @Override
@@ -137,7 +133,6 @@ public class StatsController implements Initializable {
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
-        // Optional: Set cell styles for better visibility
         categoryColumn.setStyle("-fx-text-fill: black; -fx-font-size: 12px;");
         amountColumn.setStyle("-fx-text-fill: black; -fx-font-size: 12px;");
     }
@@ -160,7 +155,6 @@ public class StatsController implements Initializable {
                     .collect(Collectors.toList());
         }
 
-        // Apply filter
         if ("Income".equals(selectedFilter)) {
             transactions = transactions.stream()
                     .filter(t -> t.getTransactionType().equalsIgnoreCase("Income"))
@@ -177,20 +171,17 @@ public class StatsController implements Initializable {
 
     private void displayChart(List<Transaction> transactions, String filter) {
         chartContainer.getChildren().clear();
-        categoryColorMap.clear(); // Clear previous mappings
+        categoryColorMap.clear(); 
 
-        // Create the PieChart
         PieChart pieChart = new PieChart();
         pieChart.setTitle("Transaction Categories");
-        pieChart.setLegendVisible(false); // Disable default legend
+        pieChart.setLegendVisible(false); 
 
-        // Group transactions by type or category and sum the amounts
         var groupedData = transactions.stream()
                 .collect(Collectors.groupingBy(
                         filter.equals("Show All") ? Transaction::getTransactionType : Transaction::getCategoryName,
                         Collectors.reducing(BigDecimal.ZERO, Transaction::getAmount, BigDecimal::add)));
 
-        // Assign colors and create PieChart.Data objects
         int colorIndex = 0;
         for (var entry : groupedData.entrySet()) {
             String category = entry.getKey();
@@ -202,64 +193,49 @@ public class StatsController implements Initializable {
             String color;
 
             if ("Show All".equals(filter)) {
-                // Assign green for Income and red for Expense
                 if ("Income".equalsIgnoreCase(category)) {
                     color = "#4CAF50"; // Green
                 } else if ("Expense".equalsIgnoreCase(category)) {
                     color = "#F44336"; // Red
                 } else {
-                    color = "#2196F3"; // Default Blue for others
+                    color = "#2196F3"; //Blue
                 }
             } else if ("Income".equals(filter)) {
-                // Assign distinct colors from incomeColors
                 color = incomeColors.get(colorIndex % incomeColors.size());
                 colorIndex++;
-            } else { // "Expense"
-                // Assign distinct colors from expenseColors
+            } else { 
                 color = expenseColors.get(colorIndex % expenseColors.size());
                 colorIndex++;
             }
-
-            // Map category to its color
             categoryColorMap.put(category, color);
 
-            // Apply color to the slice
             slice.getNode().setStyle("-fx-pie-color: " + color + ";");
         }
 
-        // Change the pie chart title color to white
         pieChart.lookup(".chart-title").setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
 
-        // Change the slice labels color to white
         Platform.runLater(() -> {
             for (PieChart.Data data : pieChart.getData()) {
                 Node node = data.getNode();
                 if (node != null) {
-                    // Lookup the label node within the slice
                     Text label = (Text) node.lookup(".chart-pie-label");
                     if (label != null) {
                         label.setFill(Color.WHITE);
-                        // Optional: Enhance label visibility
                         label.setStyle("-fx-font-size: 12px; -fx-font-weight: bold;");
                     }
                 }
             }
         });
 
-        // Create a custom legend based on the category-color map
         VBox customLegend = createCustomLegend(groupedData.keySet(), filter);
-
-        // Create a container VBox to hold PieChart and Custom Legend
-        VBox container = new VBox(10); // 10px spacing
+        VBox container = new VBox(10); 
         container.getChildren().addAll(pieChart, customLegend);
 
-        // Set anchor constraints for the container
         AnchorPane.setTopAnchor(container, 0.0);
         AnchorPane.setBottomAnchor(container, 0.0);
         AnchorPane.setLeftAnchor(container, 0.0);
         AnchorPane.setRightAnchor(container, 0.0);
 
-        // Add the container to chartContainer
         chartContainer.getChildren().add(container);
     }
 
@@ -275,17 +251,17 @@ public class StatsController implements Initializable {
         legendBox.setStyle("-fx-background-color: transparent; -fx-padding: 10;");
 
         for (String category : categories) {
-            HBox legendItem = new HBox(5); // 5px spacing between color box and label
+            HBox legendItem = new HBox(5); 
             legendItem.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
 
             // Create color box
             Rectangle colorBox = new Rectangle(15, 15);
-            String color = categoryColorMap.getOrDefault(category, "#2196F3"); // Default Blue
+            String color = categoryColorMap.getOrDefault(category, "#2196F3"); 
             colorBox.setFill(Color.web(color));
 
             // Create label
             Label label = new Label(category);
-            label.setStyle("-fx-text-fill: white; -fx-font-size: 12px;"); // White text for visibility
+            label.setStyle("-fx-text-fill: white; -fx-font-size: 12px;"); 
 
             legendItem.getChildren().addAll(colorBox, label);
             legendBox.getChildren().add(legendItem);
@@ -306,9 +282,6 @@ public class StatsController implements Initializable {
         detailsTable.setItems(details);
     }
 
-    /**
-     * Inner class representing transaction details for the table view.
-     */
     public static class TransactionDetail {
         private final String category;
         private final String amount;
