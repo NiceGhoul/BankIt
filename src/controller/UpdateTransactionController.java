@@ -12,10 +12,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Category;
-import model.Expense;
-import model.Income;
 import model.Transaction;
 import model.Wallet;
+import strategy.ExpenseStrategy;
+import strategy.IncomeStrategy;
+import strategy.TransactionTypeStrategy;
 import util.ShowAlert;
 
 import java.io.IOException;
@@ -23,7 +24,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import adapter.TransactionAdapter;
 
 public class UpdateTransactionController {
 
@@ -153,18 +153,14 @@ public class UpdateTransactionController {
             }
 
             Wallet oldWallet = getWalletById(currentTransaction.getWalletId());
+            BigDecimal currentAmount = currentTransaction.getAmount();
 
-            if (currentTransaction instanceof Income) {
-                oldWallet.setBalance(oldWallet.getBalance().subtract(currentTransaction.getAmount()));
-            } else if (currentTransaction instanceof Expense) {
-                oldWallet.setBalance(oldWallet.getBalance().add(currentTransaction.getAmount()));
-            }
+            oldWallet.setBalance(currentTransaction.getTransactionTypeStrategy().reverseBalance(oldWallet.getBalance(),
+                    currentAmount));
 
-            if (transactionType.equals("Income") && currentTransaction instanceof Expense) {
-                currentTransaction = TransactionAdapter.convertExpenseToIncome(currentTransaction);
-            } else if (transactionType.equals("Expense") && currentTransaction instanceof Income) {
-                currentTransaction = TransactionAdapter.convertIncomeToExpense(currentTransaction);
-            }
+            TransactionTypeStrategy newStrategy = transactionType.equals("Income") ? new IncomeStrategy()
+                    : new ExpenseStrategy();
+            currentTransaction.setTransactionTypeStrategy(newStrategy);
 
             currentTransaction.setWalletId(newWalletId);
             currentTransaction.setCategoryId(categoryId);
@@ -172,16 +168,11 @@ public class UpdateTransactionController {
             currentTransaction.setDescription(description);
             currentTransaction.setDate(date);
 
-            if (currentTransaction instanceof Income) {
-                newWallet.setBalance(newWallet.getBalance().add(amount));
-            } else if (currentTransaction instanceof Expense) {
-                newWallet.setBalance(newWallet.getBalance().subtract(amount));
-            }
-
+            newWallet.setBalance(newStrategy.updateBalance(newWallet.getBalance(), amount));
             updateTransactionInDataSource(currentTransaction);
 
-            ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Update Transaction Successful",
-                    "Transaction Updated", "The transaction was updated successfully!");
+            ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Update Transaction Successful", "Transaction Updated",
+                    "The transaction was updated successfully!");
 
             navigateToTransactionPage();
 

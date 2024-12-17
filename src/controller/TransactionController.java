@@ -19,8 +19,6 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import model.Expense;
-import model.Income;
 import model.Transaction;
 import model.Wallet;
 import util.UserSession;
@@ -58,7 +56,6 @@ public class TransactionController {
 
 	@FXML
 	private ComboBox<String> typeComboBox;
-
 
 	@FXML
 	private Hyperlink logoutButton;
@@ -106,7 +103,7 @@ public class TransactionController {
 		setupYearComboBox();
 		setupTypeComboBox();
 		setupTableView();
-		filterTransactions(); 
+		filterTransactions();
 	}
 
 	private void setupMonthComboBox() {
@@ -119,14 +116,13 @@ public class TransactionController {
 	}
 
 	@FXML
-	private void exportButtonOnAction(){
+	private void exportButtonOnAction() {
 		exportToExcel();
 	}
 
 	private void exportToExcel() {
-        
-    }
 
+	}
 
 	private void setupDateComboBox() {
 		ObservableList<String> dates = FXCollections.observableArrayList();
@@ -227,14 +223,9 @@ public class TransactionController {
 		ShowAlert.showAlert(Alert.AlertType.CONFIRMATION, "Delete Transaction", "Delete Transaction",
 				"Are you sure you want to delete this transaction");
 		Wallet wallet = getWalletById(transaction.getWalletId());
-		if (transaction instanceof Income) {
-			wallet.setBalance(wallet.getBalance().subtract(transaction.getAmount()));
-		} else if (transaction instanceof Expense) {
-			wallet.setBalance(wallet.getBalance().add(transaction.getAmount()));
-		}
+		wallet.setBalance(transaction.getTransactionTypeStrategy().reverseBalance(wallet.getBalance(), transaction.getAmount()));
 		transactions.remove(transaction);
 		transactionTableView.setItems(FXCollections.observableArrayList(transactions));
-
 	}
 
 	private void filterTransactions() {

@@ -5,8 +5,9 @@ import java.time.LocalDate;
 
 import factory.CategoryFactory;
 import factory.WalletFactory;
+import strategy.TransactionTypeStrategy;
 
-public abstract class Transaction {
+public class Transaction {
     private int id;
     private int userId;
     private int walletId;
@@ -14,8 +15,9 @@ public abstract class Transaction {
     private BigDecimal amount;
     private String description;
     private LocalDate date;
+    private TransactionTypeStrategy transactionTypeStrategy;
 
-    public Transaction(int id, int userId, int walletId, int categoryId, BigDecimal amount, String description, LocalDate date) {
+    public Transaction(int id, int userId, int walletId, int categoryId, BigDecimal amount, String description, LocalDate date, TransactionTypeStrategy transactionTypeStrategy) {
         this.id = id;
         this.userId = userId;
         this.walletId = walletId;
@@ -23,6 +25,7 @@ public abstract class Transaction {
         this.amount = amount;
         this.description = description;
         this.date = date;
+        this.transactionTypeStrategy = transactionTypeStrategy;
     }
 
     public int getId() {
@@ -96,5 +99,14 @@ public abstract class Transaction {
                 .orElse("Unknown Wallet");
     }
 
-    public abstract String getTransactionType();
+    public String getTransactionType() {
+        return transactionTypeStrategy.getTransactionType();
+    }
+    public TransactionTypeStrategy getTransactionTypeStrategy() {
+        return transactionTypeStrategy;
+    }
+
+    public void setTransactionTypeStrategy(TransactionTypeStrategy transactionTypeStrategy) {
+        this.transactionTypeStrategy = transactionTypeStrategy;
+    }
 }

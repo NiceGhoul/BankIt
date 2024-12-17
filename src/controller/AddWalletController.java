@@ -3,91 +3,98 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.Expense;
+import model.Transaction;
 import model.User;
 import util.ShowAlert;
 import util.UserSession;
+import factory.WalletFactory;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import factory.WalletFactory;
 
 public class AddWalletController {
 
-	@FXML
-	private Text balanceText, walletBalance;
-	@FXML
-	private Button addWalletButton, backButton;
-	@FXML
-	private Label walletName, AddLabel, successLabel, descLabel;
-	@FXML
-	private TableView<Expense> transactionTable;
-	@FXML
-	private ComboBox<String> walletDropdown;
-	@FXML
-	private TableColumn<Expense, Integer> idColumn;
-	@FXML
-	private TableColumn<Expense, String> expenseTypeColumn, categoryColumn, descriptionColumn, expenseDateColumn;
-	@FXML
-	private TableColumn<Expense, BigDecimal> amountColumn;
-	@FXML
-	private TextField walletNameField, walletBalanceField;
-	@FXML
-	private TextArea walletDesc;
+    @FXML
+    private Text balanceText, walletBalance;
 
-	@FXML
-	public void initialize() {
-		System.out.println("Showing Add Wallet Scene");
-	}
+    @FXML
+    private Button addWalletButton, backButton;
 
-	@FXML
-	public void createNewWallet() {
-		User currentUser = UserSession.getInstance().getCurrentUser();
+    @FXML
+    private Label walletName, addLabel, successLabel, descLabel;
 
-		String walletName = walletNameField.getText();
-		String balanceText = walletBalanceField.getText();
-		String description = walletDesc.getText();
+    @FXML
+    private TableView<Transaction> transactionTable;
 
-		if (walletName.isEmpty() || balanceText.isEmpty()) {
-			System.out.println("Please fill out all required fields.");
-			return;
-		}
+    @FXML
+    private TableColumn<Transaction, Integer> idColumn;
 
-		if (description.isEmpty()) {
-			description = " ";
-		}
-		WalletFactory.createWallet(currentUser.getUserId(), walletName, description, new BigDecimal(balanceText));
-		ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Add Wallet is Successful", "Wallet is Created", "The Wallet was created successfully!");
-		GoToWallet();
+    @FXML
+    private TableColumn<Transaction, String> transactionTypeColumn, categoryColumn, descriptionColumn, dateColumn;
 
-	}
+    @FXML
+    private TableColumn<Transaction, BigDecimal> amountColumn;
 
-	@FXML
-	public void GoToWallet() {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Wallet.fxml"));
-			Scene wallet = new Scene(loader.load());
+    @FXML
+    private TextField walletNameField, walletBalanceField;
 
-			Stage stage = (Stage) backButton.getScene().getWindow();
+    @FXML
+    private TextArea walletDesc;
 
-			stage.setScene(wallet);
-			stage.setTitle("Wallet");
-			stage.show();
+    @FXML
+    public void initialize() {
+        System.out.println("Showing Add Wallet Scene");
+    }
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    @FXML
+    public void createNewWallet() {
+        User currentUser = UserSession.getInstance().getCurrentUser();
 
-	}
+        String walletName = walletNameField.getText().trim();
+        String balanceText = walletBalanceField.getText().trim();
+        String description = walletDesc.getText().trim();
 
+        if (!validateInput(walletName, balanceText)) {
+            return;
+        }
+
+        if (description.isEmpty()) {
+            description = "No description provided.";
+        }
+
+        try {
+            BigDecimal balance = new BigDecimal(balanceText);
+            WalletFactory.createWallet(currentUser.getUserId(), walletName, description, balance);
+            ShowAlert.showAlert(Alert.AlertType.INFORMATION, "Add Wallet Successful", "Wallet Created", "The wallet was created successfully!");
+            GoToWallet();
+        } catch (NumberFormatException e) {
+            ShowAlert.showAlert(Alert.AlertType.ERROR, "Invalid Input", "Invalid Balance", "Please enter a valid number for the balance.");
+        }
+    }
+
+    @FXML
+    public void GoToWallet() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Wallet.fxml"));
+            Scene walletScene = new Scene(loader.load());
+
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(walletScene);
+            stage.setTitle("Wallet");
+            stage.show();
+        } catch (IOException e) {
+            ShowAlert.showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to Load Wallet Page", "An error occurred while navigating to the wallet page.");
+            e.printStackTrace();
+        }
+    }
+    private boolean validateInput(String walletName, String balanceText) {
+        if (walletName.isEmpty() || balanceText.isEmpty()) {
+            ShowAlert.showAlert(Alert.AlertType.WARNING, "Input Error", "Missing Fields", "Please fill out all required fields.");
+            return false;
+        }
+        return true;
+    }
 }
